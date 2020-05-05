@@ -1,0 +1,49 @@
+{
+	"apps": {
+		"org.onosproject.provider.lldp": {
+			"suppression": {
+				"deviceTypes": {
+					"0": "ROADM",
+					"1": "OTN",
+					"2": "FIBER_SWITCH",
+					"3": "OPTICAL_AMPLIFIER",
+					"4": "OLS",
+					"5": "TERMINAL_DEVICE"
+				},
+				"annotation": "{\"no-lldp\":null}"
+			}
+		}
+	},
+	"devices": {
+		"device:bmv2:s1": {
+			"ports": {
+				"1": {
+					"name":"s1-eth1",
+					"speed":10000,
+					"enabled":true,
+					"number":1,
+					"removed":false,
+					"type":"copper"
+				},
+				"2": {
+					"name":"s1-eth2",
+					"speed":10000,
+					"enabled":true,
+					"number":2,
+					"removed":false,
+					"type":"copper"
+				}
+			},
+			"basic": {
+				"managementAddress": "grpc://0.0.0.0:50001?device_id=1",
+				"driver":"bmv2",
+				"pipeconf":"p4-flowstats-pipeconf"
+			}
+		}
+	},
+	"ports":{},
+	"hosts":{},
+	"links":{},
+	"layouts":{},
+	"regions":{}
+}

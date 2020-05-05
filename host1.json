@@ -1,0 +1,15 @@
+{
+    "mac": "00:00:00:00:00:01",
+    "vlan": "None",
+    "innerVlan": "None",
+    "configured": false,
+    "ipAddresses": [
+      "10.0.0.1"
+    ],
+    "locations": [
+      {
+        "elementId": "device:bmv2:s1",
+        "port": "1"
+      }
+    ]
+}
