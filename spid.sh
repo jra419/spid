@@ -5,7 +5,7 @@ echo "Starting veth interfaces and cleaning up"
 echo "--------------------"
 
 sudo pkill -f simple_switch_grpc
-sudo pkill -f flowstats_
+sudo pkill -f ml_
 
 sudo bash veth_teardown.sh
 sudo bash veth_setup.sh
@@ -14,7 +14,7 @@ echo "--------------------"
 echo "ML python REST script: Isolation Forest"
 echo "--------------------"
 
-python3 flowstats_forest_rest.py &
+python3 ml_isolation_forest.py &
 
 sleep 10
 
@@ -94,16 +94,3 @@ echo "--------------------"
 cd ~/Documents/
 
 sudo tcpreplay -i s1-eth1 -K --limit=20000 --pps=100 $1
-
-# echo "--------------------"
-# echo "Clustering: K-Means"
-# echo "--------------------"
-
-# python3 flowstats_kmeans_silhouette.py flow-stats/threshold.csv
-
-# echo "--------------------"
-# echo "Outlier Detection: Isolation Forest"
-# echo "--------------------"
-
-# python3 flowstats_forest.py flow-stats/threshold.csv
-

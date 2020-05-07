@@ -21,7 +21,7 @@ app = Flask(__name__)
 df = pd.DataFrame()
 
 @app.route('/add/', methods = ['POST'])
-def flowstats_rest():
+def isolation_forest():
 	
 	if request.method == 'POST':
 		
@@ -78,10 +78,8 @@ def flowstats_rest():
 		print("DF")
 		print(df)
 
-		# Commented out for now due until the MV-Sketch input issue is resolved. 
-
-		# if (df.shape[0] >= 2):
-		# 	isolation_forest()
+		if (df.shape[0] >= 2):
+		 	isolation_forest()
 
 		return "0"
 
@@ -90,7 +88,6 @@ def isolation_forest():
 	global df
 
 	flowstats = df.copy()
-	# flowstats = flowstats.drop(['mv'], axis=1)
 
 	flowstats.fillna(flowstats.mean(), inplace=True)
 
@@ -193,7 +190,7 @@ def isolation_forest():
 									'timestamp',
 									'ipSrc',
 									'ipDst','ipProto','srcPort','dstPort','tcpFlags','icmpType','icmpCode', 'cmIp','cm5t','bmSrc','bmDst','ams','mv','anomaly'])
-	df_netflow.to_csv('flowstats_final-' + current_date + '.csv', index=None)   
+	df_netflow.to_csv('output-' + current_date + '.csv', index=None)   
 
 	# pca = PCA(2)
 	# pca.fit(flowstats_normalized_all[to_model_columns])
