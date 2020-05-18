@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo trap "exit" INT TERM
+sudo trap "kill 0" EXIT
+
 echo "--------------------"
 echo "Starting veth interfaces and cleaning up"
 echo "--------------------"
@@ -34,7 +37,7 @@ sleep 60
 
 tail -f /tmp/onos-2.2.1-SNAPSHOT/onos.log | while read LOGLINE
 do
-   [[ "${LOGLINE}" == *"Application org.onosproject.routeradvertisement has been installed"* ]] && pkill -P $$ tail
+   [[ "${LOGLINE}" == *"Application org.onosproject.drivers.ciena.c5170 has been installed"* ]] && pkill -P $$ tail
 done
 echo "
 ----
@@ -49,7 +52,7 @@ echo "--------------------"
 echo "Starting BMv2 switch"
 echo "--------------------"
 
-sudo simple_switch_grpc --device-id 1 -i 1@s1-eth1 -i 2@s1-eth2 --thrift-port 36869 -Lwarn --no-p4 -- --cpu-port 255 --grpc-server-addr 0.0.0.0:50001 > /dev/null &
+sudo simple_switch_grpc --device-id 1 -i 1@s1-eth1 -i 2@s1-eth2 --thrift-port 36869 -Lwarn --no-p4 -- --cpu-port 255 --grpc-server-addr 127.0.0.1:51403 > /dev/null &
 
 sleep 15
 
@@ -61,15 +64,15 @@ netcfg="@$HOME/spid/netcfg.json"
 host1="@$HOME/spid/host1.json"
 host2="@$HOME/spid/host2.json"
 
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $netcfg --user onos:rocks 'http://192.168.70.134:8181/onos/v1/network/configuration' 
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $netcfg --user onos:rocks 'http://localhost:8181/onos/v1/network/configuration' 
 
 sleep 10
 
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $host1 --user onos:rocks 'http://192.168.70.134:8181/onos/v1/hosts' 
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $host1 --user onos:rocks 'http://localhost:8181/onos/v1/hosts' 
 
 sleep 5
 
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $host2 --user onos:rocks 'http://192.168.70.134:8181/onos/v1/hosts' 
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $host2 --user onos:rocks 'http://localhost:8181/onos/v1/hosts' 
 
 sleep 5
 
@@ -79,7 +82,7 @@ echo "--------------------"
 
 cd ~/spid/
 
-./runtime_cli_config_flowstats.sh
+./runtime_cli_config.sh
 
 # echo "--------------------" 
 # echo "Running tcpreplay: Training set"
