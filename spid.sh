@@ -46,15 +46,15 @@ echo "
 ----
 ----"
 
-sleep 20
+sleep 15
 
 echo "--------------------"
 echo "Starting BMv2 switch"
 echo "--------------------"
 
-sudo simple_switch_grpc --device-id 1 -i 1@s1-eth1 -i 2@s1-eth2 --thrift-port 36869 -Lwarn --no-p4 -- --cpu-port 255 --grpc-server-addr 127.0.0.1:51403 > /dev/null &
+sudo simple_switch_grpc --device-id 1 -i 1@s1-eth1 -i 2@s1-eth2 --thrift-port 36869 -Lwarn --no-p4 -- --cpu-port 255 --grpc-server-addr 0.0.0.0:50001 > /dev/null &
 
-sleep 15
+sleep 10
 
 echo "--------------------"
 echo "Pushing netconf and host info to ONOS"
@@ -63,6 +63,7 @@ echo "--------------------"
 netcfg="@$HOME/spid/netcfg.json"
 host1="@$HOME/spid/host1.json"
 host2="@$HOME/spid/host2.json"
+# sketches="@$HOME/spid/t_sketches_config.json"
 
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $netcfg --user onos:rocks 'http://localhost:8181/onos/v1/network/configuration' 
 
@@ -76,13 +77,17 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 
 sleep 5
 
-echo "--------------------"
-echo "Configuring P4 hash function polynomials"
-echo "--------------------"
+# curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $sketches --user onos:rocks 'http://localhost:8181/onos/v1/flows'
 
-cd ~/spid/
+# sleep 5
 
-./runtime_cli_config.sh
+# echo "--------------------"
+# echo "Configuring P4 hash function polynomials"
+# echo "--------------------"
+
+# cd ~/spid/
+
+# ./runtime_cli_config.sh
 
 # echo "--------------------" 
 # echo "Running tcpreplay: Training set"
@@ -96,4 +101,4 @@ echo "--------------------"
 
 cd ~/Documents/
 
-sudo tcpreplay -i s1-eth1 -K --limit=20000 --pps=100 $1
+sudo tcpreplay -i s1-eth1 -K --oneatatime $1

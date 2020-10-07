@@ -20,7 +20,7 @@
 				}
 			},
 			"basic": {
-				"managementAddress": "grpc://127.0.0.1:51403?device_id=1",
+				"managementAddress": "grpc://0.0.0.0:50001?device_id=1",
 				"driver":"bmv2",
 				"pipeconf":"p4-flowstats-pipeconf"
 			}
