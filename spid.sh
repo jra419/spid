@@ -17,7 +17,7 @@ echo "--------------------"
 echo "ML python REST script: Isolation Forest"
 echo "--------------------"
 
-python3 ml_isolation_forest.py &
+sudo python3 ml_isolation_forest.py &
 
 sleep 10
 

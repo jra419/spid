@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import sys
+
 import json
 from flask import Flask, jsonify, request
 import pandas as pd
@@ -21,7 +22,7 @@ app = Flask(__name__)
 df = pd.DataFrame()
 
 @app.route('/add/', methods = ['POST'])
-def isolation_forest():
+def ml_isolation_forest():
 	
 	if request.method == 'POST':
 		
