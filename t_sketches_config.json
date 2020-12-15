@@ -14,14 +14,17 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.sketch_config",
 				"actionParams":{
-					"cm_5t_flag": "0",
-					"cm_ip_flag": "0",
-					"bm_src_flag": "0",
-					"bm_dst_flag": "0",
+					"cm_flag": "0",
+					"bm_ip_src_flag": "0",
+					"bm_ip_dst_flag": "0",
+					"bm_ip_src_port_src_flag": "0",
+					"bm_ip_src_port_dst_flag": "0",
+					"bm_ip_dst_port_src_flag": "0",
+					"bm_ip_dst_port_dst_flag": "0",
 					"ams_flag": "0",
 					"mv_flag": "0",
-					"virtual_register_num": "13",
-					"hash_size": "8000"
+					"virtual_register_num": "23",
+					"hash_size": "32"
 				}
 			}
 			]
@@ -36,7 +39,7 @@
 		}	  	
 	},		
 	{
-		"tableId": "c_ingress.cm_5t.cm_5t_set_reg_0.t_set_reg",    	
+		"tableId": "c_ingress.cm.cm_set_reg_0.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -47,7 +50,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_5t_set_reg_0.set_reg",
+				"actionId": "c_ingress.cm.cm_set_reg_0.set_reg",
 				"actionParams":{
 					"current_register": "0",
 					"current_index": "0"
@@ -57,7 +60,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_5t.cm_5t_set_reg_1.t_set_reg",    	
+		"tableId": "c_ingress.cm.cm_set_reg_1.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -68,7 +71,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_5t_set_reg_1.set_reg",
+				"actionId": "c_ingress.cm.cm_set_reg_1.set_reg",
 				"actionParams":{
 					"current_register": "1",
 					"current_index": "0"
@@ -78,7 +81,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_5t.cm_5t_set_reg_2.t_set_reg",    	
+		"tableId": "c_ingress.cm.cm_set_reg_2.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -89,7 +92,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_5t_set_reg_2.set_reg",
+				"actionId": "c_ingress.cm.cm_set_reg_2.set_reg",
 				"actionParams":{
 					"current_register": "2",
 					"current_index": "0"
@@ -99,7 +102,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_5t.cm_5t_set_reg_final.t_set_reg",    	
+		"tableId": "c_ingress.cm.cm_set_reg_final.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -110,7 +113,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_5t_set_reg_final.set_reg",
+				"actionId": "c_ingress.cm.cm_set_reg_final.set_reg",
 				"actionParams":{
 					"current_register": "3",
 					"current_index": "0"
@@ -120,7 +123,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip.cm_ip_set_reg_0.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_src.bm_ip_src_set_reg_0.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -131,7 +134,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_ip_set_reg_0.set_reg",
+				"actionId": "c_ingress.bm_ip_src.bm_ip_src_set_reg_0.set_reg",
 				"actionParams":{
 					"current_register": "4",
 					"current_index": "0"
@@ -141,7 +144,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip.cm_ip_set_reg_1.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_src.bm_ip_src_set_reg_1.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -152,7 +155,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_ip_set_reg_1.set_reg",
+				"actionId": "c_ingress.bm_ip_src.bm_ip_src_set_reg_1.set_reg",
 				"actionParams":{
 					"current_register": "5",
 					"current_index": "0"
@@ -162,7 +165,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip.cm_ip_set_reg_2.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_src.bm_ip_src_set_reg_2.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -173,7 +176,28 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_ip_set_reg_2.set_reg",
+				"actionId": "c_ingress.bm_ip_src.bm_ip_src_set_reg_2.set_reg",
+				"actionParams":{
+					"current_register": "5",
+					"current_index": "0"
+				}
+			}
+			]
+		}
+	},
+	{
+		"tableId": "c_ingress.bm_ip_dst.bm_ip_dst_set_reg_0.t_set_reg",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst.bm_ip_dst_set_reg_0.set_reg",
 				"actionParams":{
 					"current_register": "6",
 					"current_index": "0"
@@ -183,7 +207,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip.cm_ip_set_reg_final.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_dst.bm_ip_dst_set_reg_1.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -194,7 +218,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_ip_set_reg_final.set_reg",
+				"actionId": "c_ingress.bm_ip_dst.bm_ip_dst_set_reg_1.set_reg",
 				"actionParams":{
 					"current_register": "7",
 					"current_index": "0"
@@ -204,7 +228,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.bm_src.bm_src_set_reg_0.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_dst.bm_ip_dst_set_reg_2.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -215,7 +239,28 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_src.bm_src_set_reg_0.set_reg",
+				"actionId": "c_ingress.bm_ip_dst.bm_ip_dst_set_reg_2.set_reg",
+				"actionParams":{
+					"current_register": "7",
+					"current_index": "0"
+				}
+			}
+			]
+		}
+	},
+	{
+		"tableId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_set_reg_0.t_set_reg",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_set_reg_0.set_reg",
 				"actionParams":{
 					"current_register": "8",
 					"current_index": "0"
@@ -225,7 +270,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.bm_src.bm_src_set_reg_1.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_set_reg_1.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -236,7 +281,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_src.bm_src_set_reg_1.set_reg",
+				"actionId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_set_reg_1.set_reg",
 				"actionParams":{
 					"current_register": "9",
 					"current_index": "0"
@@ -246,7 +291,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.bm_src.bm_src_set_reg_2.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_set_reg_2.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -257,7 +302,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_src.bm_src_set_reg_2.set_reg",
+				"actionId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_set_reg_2.set_reg",
 				"actionParams":{
 					"current_register": "9",
 					"current_index": "0"
@@ -265,9 +310,9 @@
 			}
 			]
 		}
-	},	
+	},
 	{
-		"tableId": "c_ingress.bm_dst.bm_dst_set_reg_0.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_set_reg_0.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -278,7 +323,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_dst.bm_dst_set_reg_0.set_reg",
+				"actionId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_set_reg_0.set_reg",
 				"actionParams":{
 					"current_register": "A",
 					"current_index": "0"
@@ -288,7 +333,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.bm_dst.bm_dst_set_reg_1.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_set_reg_1.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -299,7 +344,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_dst.bm_dst_set_reg_1.set_reg",
+				"actionId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_set_reg_1.set_reg",
 				"actionParams":{
 					"current_register": "B",
 					"current_index": "0"
@@ -309,7 +354,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.bm_dst.bm_dst_set_reg_2.t_set_reg",    	
+		"tableId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_set_reg_2.t_set_reg",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -320,7 +365,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_dst.bm_dst_set_reg_2.set_reg",
+				"actionId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_set_reg_2.set_reg",
 				"actionParams":{
 					"current_register": "B",
 					"current_index": "0"
@@ -329,6 +374,132 @@
 			]
 		}
 	},	
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_set_reg_0.t_set_reg",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_set_reg_0.set_reg",
+				"actionParams":{
+					"current_register": "C",
+					"current_index": "0"
+				}
+			}
+			]
+		}
+	},
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_set_reg_1.t_set_reg",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_set_reg_1.set_reg",
+				"actionParams":{
+					"current_register": "D",
+					"current_index": "0"
+				}
+			}
+			]
+		}
+	},
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_set_reg_2.t_set_reg",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_set_reg_2.set_reg",
+				"actionParams":{
+					"current_register": "D",
+					"current_index": "0"
+				}
+			}
+			]
+		}
+	},
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_set_reg_0.t_set_reg",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_set_reg_0.set_reg",
+				"actionParams":{
+					"current_register": "E",
+					"current_index": "0"
+				}
+			}
+			]
+		}
+	},
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_set_reg_1.t_set_reg",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_set_reg_1.set_reg",
+				"actionParams":{
+					"current_register": "F",
+					"current_index": "0"
+				}
+			}
+			]
+		}
+	},
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_set_reg_2.t_set_reg",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_set_reg_2.set_reg",
+				"actionParams":{
+					"current_register": "F",
+					"current_index": "0"
+				}
+			}
+			]
+		}
+	},			
 	{
 		"tableId": "c_ingress.ams.ams_set_reg_0.t_set_reg",    	
 		"priority": 40000,
@@ -343,7 +514,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.ams.ams_set_reg_0.set_reg",
 				"actionParams":{
-					"current_register": "C",
+					"current_register": "10",
 					"current_index": "0"
 				}
 			}
@@ -364,7 +535,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.ams.ams_set_reg_1.set_reg",
 				"actionParams":{
-					"current_register": "D",
+					"current_register": "11",
 					"current_index": "0"
 				}
 			}
@@ -385,7 +556,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.ams.ams_set_reg_2.set_reg",
 				"actionParams":{
-					"current_register": "E",
+					"current_register": "12",
 					"current_index": "0"
 				}
 			}
@@ -406,7 +577,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.ams.ams_set_reg_final.set_reg",
 				"actionParams":{
-					"current_register": "F",
+					"current_register": "13",
 					"current_index": "0"
 				}
 			}
@@ -427,7 +598,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.mv.mv_set_reg_0.set_reg",
 				"actionParams":{
-					"current_register": "10",
+					"current_register": "14",
 					"current_index": "0"
 				}
 			}
@@ -448,7 +619,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.mv.mv_set_reg_1.set_reg",
 				"actionParams":{
-					"current_register": "11",
+					"current_register": "15",
 					"current_index": "0"
 				}
 			}
@@ -469,7 +640,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.mv.mv_set_reg_2.set_reg",
 				"actionParams":{
-					"current_register": "12",
+					"current_register": "16",
 					"current_index": "0"
 				}
 			}
@@ -490,7 +661,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.mv.mv_set_reg_3.set_reg",
 				"actionParams":{
-					"current_register": "13",
+					"current_register": "17",
 					"current_index": "0"
 				}
 			}
@@ -511,7 +682,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.mv.mv_set_reg_4.set_reg",
 				"actionParams":{
-					"current_register": "11",
+					"current_register": "15",
 					"current_index": "0"
 				}
 			}
@@ -532,7 +703,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.mv.mv_set_reg_5.set_reg",
 				"actionParams":{
-					"current_register": "12",
+					"current_register": "16",
 					"current_index": "0"
 				}
 			}
@@ -553,7 +724,7 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.mv.mv_set_reg_6.set_reg",
 				"actionParams":{
-					"current_register": "13",
+					"current_register": "17",
 					"current_index": "0"
 				}
 			}
@@ -561,7 +732,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_5t.cm_5t_epoch_0.t_epoch_check",    	
+		"tableId": "c_ingress.cm.cm_epoch_0.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -572,7 +743,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_5t_epoch_0.epoch_check_0"
+				"actionId": "c_ingress.cm.cm_epoch_0.epoch_check_0"
 			}
 			]
 		},
@@ -592,7 +763,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_5t.cm_5t_epoch_1.t_epoch_check",    	
+		"tableId": "c_ingress.cm.cm_epoch_1.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -603,7 +774,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_5t_epoch_1.epoch_check_1"
+				"actionId": "c_ingress.cm.cm_epoch_1.epoch_check_1"
 			}
 			]
 		},
@@ -623,7 +794,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_5t.cm_5t_epoch_2.t_epoch_check",    	
+		"tableId": "c_ingress.cm.cm_epoch_2.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -634,596 +805,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_5t_epoch_2.epoch_check_2"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "2"	
-				}
-				]
-			}
-			]
-		}	  	
-	},	
-	{
-		"tableId": "c_ingress.cm_ip.cm_ip_epoch_0.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_ip_epoch_0.epoch_check_4"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "4"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.cm_ip.cm_ip_epoch_1.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_ip_epoch_1.epoch_check_5"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "5"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.cm_ip.cm_ip_epoch_2.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_ip_epoch_2.epoch_check_6"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "6"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.bm_src.bm_src_epoch_0.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_src.bm_src_epoch_0.epoch_check_8"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "8"	
-				}
-				]
-			}
-			]
-		}	  	
-	},	
-	{
-		"tableId": "c_ingress.bm_src.bm_src_epoch_1.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_src.bm_src_epoch_1.epoch_check_9"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "9"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.bm_src.bm_src_epoch_2.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_src.bm_src_epoch_2.epoch_check_9"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "9"	
-				}
-				]
-			}
-			]
-		}	  	
-	},	
-	{
-		"tableId": "c_ingress.bm_dst.bm_dst_epoch_0.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_dst.bm_dst_epoch_0.epoch_check_10"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "A"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.bm_dst.bm_dst_epoch_1.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_dst.bm_dst_epoch_1.epoch_check_11"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "B"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.bm_dst.bm_dst_epoch_2.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_dst.bm_dst_epoch_2.epoch_check_11"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "B"	
-				}
-				]
-			}
-			]
-		}	  	
-	},		
-	{
-		"tableId": "c_ingress.ams.ams_epoch_0.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.ams.ams_epoch_0.epoch_check_12"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "C"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.ams.ams_epoch_1.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.ams.ams_epoch_1.epoch_check_13"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "D"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.ams.ams_epoch_2.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.ams.ams_epoch_2.epoch_check_14"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "E"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.mv.mv_epoch_0.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.mv.mv_epoch_0.epoch_check_16"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "10"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.mv.mv_epoch_1.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.mv.mv_epoch_1.epoch_check_17"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "11"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.mv.mv_epoch_2.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.mv.mv_epoch_2.epoch_check_18"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "12"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.mv.mv_epoch_3.t_epoch_check",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.mv.mv_epoch_3.epoch_check_19"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "13"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.cm_5t.t_cm_5t_0",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_write_0"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "0"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.cm_5t.t_cm_5t_1",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_write_1"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "1"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.cm_5t.t_cm_5t_2",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_write_2"
+				"actionId": "c_ingress.cm.cm_epoch_2.epoch_check_2"
 			}
 			]
 		},
@@ -1243,7 +825,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_5t.t_cm_5t_final",    	
+		"tableId": "c_ingress.bm_ip_src.bm_ip_src_epoch_0.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1254,38 +836,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_5t.cm_write_3"
-			}
-			]
-		},
-		"selector": {
-			"criteria": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"matches": [
-				{
-					"field": "current_register_temp",
-					"match": "exact",
-					"value": "3"	
-				}
-				]
-			}
-			]
-		}	  	
-	},
-	{
-		"tableId": "c_ingress.cm_ip.t_cm_ip_0",    	
-		"priority": 40000,
-		"timeout": 0,
-		"isPermanent": true,
-		"deviceId": "device:bmv2:s1",
-		"appId": "org.onosproject.p4dma.dma",
-		"treatment": {
-			"instructions": [
-			{
-				"type": "PROTOCOL_INDEPENDENT",
-				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_write_4"
+				"actionId": "c_ingress.bm_ip_src.bm_ip_src_epoch_0.epoch_check_4"
 			}
 			]
 		},
@@ -1303,9 +854,9 @@
 			}
 			]
 		}	  	
-	},
+	},	
 	{
-		"tableId": "c_ingress.cm_ip.t_cm_ip_1",    	
+		"tableId": "c_ingress.bm_ip_src.bm_ip_src_epoch_1.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1316,7 +867,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_write_5"
+				"actionId": "c_ingress.bm_ip_src.bm_ip_src_epoch_1.epoch_check_5"
 			}
 			]
 		},
@@ -1336,7 +887,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_ip.t_cm_ip_2",    	
+		"tableId": "c_ingress.bm_ip_src.bm_ip_src_epoch_2.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1347,7 +898,38 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_write_6"
+				"actionId": "c_ingress.bm_ip_src.bm_ip_src_epoch_2.epoch_check_5"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "5"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_dst.bm_ip_dst_epoch_0.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst.bm_ip_dst_epoch_0.epoch_check_6"
 			}
 			]
 		},
@@ -1367,7 +949,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_ip.t_cm_ip_final",    	
+		"tableId": "c_ingress.bm_ip_dst.bm_ip_dst_epoch_1.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1378,7 +960,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip.cm_write_7"
+				"actionId": "c_ingress.bm_ip_dst.bm_ip_dst_epoch_1.epoch_check_7"
 			}
 			]
 		},
@@ -1396,9 +978,9 @@
 			}
 			]
 		}	  	
-	},	
+	},
 	{
-		"tableId": "c_ingress.bm_src.t_bm_src_0",
+		"tableId": "c_ingress.bm_ip_dst.bm_ip_dst_epoch_2.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1409,7 +991,38 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_src.bm_write_bitmap_8"
+				"actionId": "c_ingress.bm_ip_dst.bm_ip_dst_epoch_2.epoch_check_7"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "7"	
+				}
+				]
+			}
+			]
+		}	  	
+	},		
+	{
+		"tableId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_epoch_0.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_epoch_0.epoch_check_8"
 			}
 			]
 		},
@@ -1427,9 +1040,9 @@
 			}
 			]
 		}	  	
-	},	
+	},
 	{
-		"tableId": "c_ingress.bm_src.t_bm_src_1",
+		"tableId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_epoch_1.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1440,7 +1053,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_src.bm_write_bitmap_9"
+				"actionId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_epoch_1.epoch_check_9"
 			}
 			]
 		},
@@ -1460,7 +1073,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.bm_dst.t_bm_dst_0",
+		"tableId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_epoch_2.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1471,7 +1084,38 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_dst.bm_write_bitmap_10"
+				"actionId": "c_ingress.bm_ip_src_port_src.bm_ip_src_port_src_epoch_2.epoch_check_9"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "9"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_epoch_0.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_epoch_0.epoch_check_10"
 			}
 			]
 		},
@@ -1489,9 +1133,9 @@
 			}
 			]
 		}	  	
-	},	
+	},
 	{
-		"tableId": "c_ingress.bm_dst.t_bm_dst_1",
+		"tableId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_epoch_1.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1502,7 +1146,38 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.bm_dst.bm_write_bitmap_11"
+				"actionId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_epoch_1.epoch_check_11"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "B"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_epoch_2.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src_port_dst.bm_ip_src_port_dst_epoch_2.epoch_check_11"
 			}
 			]
 		},
@@ -1522,7 +1197,7 @@
 		}	  	
 	},	
 	{
-		"tableId": "c_ingress.ams.t_ams_0",
+		"tableId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_epoch_0.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1533,7 +1208,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.ams.ams_write_12"
+				"actionId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_epoch_0.epoch_check_12"
 			}
 			]
 		},
@@ -1551,9 +1226,9 @@
 			}
 			]
 		}	  	
-	},	
+	},
 	{
-		"tableId": "c_ingress.ams.t_ams_1",
+		"tableId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_epoch_1.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1564,7 +1239,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.ams.ams_write_13"
+				"actionId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_epoch_1.epoch_check_13"
 			}
 			]
 		},
@@ -1582,9 +1257,9 @@
 			}
 			]
 		}	  	
-	},	
+	},
 	{
-		"tableId": "c_ingress.ams.t_ams_2",
+		"tableId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_epoch_2.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1595,7 +1270,38 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.ams.ams_write_14"
+				"actionId": "c_ingress.bm_ip_dst_port_src.bm_ip_dst_port_src_epoch_2.epoch_check_13"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "D"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_epoch_0.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_epoch_0.epoch_check_14"
 			}
 			]
 		},
@@ -1613,9 +1319,9 @@
 			}
 			]
 		}	  	
-	},	
+	},
 	{
-		"tableId": "c_ingress.ams.t_ams_final",
+		"tableId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_epoch_1.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1626,7 +1332,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.ams.ams_write_15"
+				"actionId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_epoch_1.epoch_check_15"
 			}
 			]
 		},
@@ -1646,7 +1352,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.mv.t_mv_0",
+		"tableId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_epoch_2.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1657,7 +1363,38 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.mv.mv_write_16"
+				"actionId": "c_ingress.bm_ip_dst_port_dst.bm_ip_dst_port_dst_epoch_2.epoch_check_15"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "F"	
+				}
+				]
+			}
+			]
+		}	  	
+	},				
+	{
+		"tableId": "c_ingress.ams.ams_epoch_0.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.ams.ams_epoch_0.epoch_check_16"
 			}
 			]
 		},
@@ -1677,7 +1414,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.mv.t_mv_1",
+		"tableId": "c_ingress.ams.ams_epoch_1.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1688,7 +1425,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.mv.mv_write_17"
+				"actionId": "c_ingress.ams.ams_epoch_1.epoch_check_17"
 			}
 			]
 		},
@@ -1708,7 +1445,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.mv.t_mv_2",
+		"tableId": "c_ingress.ams.ams_epoch_2.t_epoch_check",    	
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1719,7 +1456,720 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.mv.mv_write_18"
+				"actionId": "c_ingress.ams.ams_epoch_2.epoch_check_18"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "12"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.mv.mv_epoch_0.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.mv.mv_epoch_0.epoch_check_20"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "14"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.mv.mv_epoch_1.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.mv.mv_epoch_1.epoch_check_21"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "15"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.mv.mv_epoch_2.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.mv.mv_epoch_2.epoch_check_22"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "16"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.mv.mv_epoch_3.t_epoch_check",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.mv.mv_epoch_3.epoch_check_23"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "17"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.cm.t_cm_0",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.cm.cm_write_0"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "0"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.cm.t_cm_1",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.cm.cm_write_1"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "1"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.cm.t_cm_2",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.cm.cm_write_2"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "2"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.cm.t_cm_final",    	
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.cm.cm_write_3"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "3"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_src.t_bm_ip_src_0",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src.bm_write_4"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "4"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_src.t_bm_ip_src_1",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src.bm_write_5"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "5"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.bm_ip_dst.t_bm_ip_dst_0",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst.bm_write_6"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "6"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_dst.t_bm_ip_dst_1",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst.bm_write_7"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "7"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.bm_ip_src_port_src.t_bm_ip_src_port_src_0",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src_port_src.bm_write_8"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "8"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_src_port_src.t_bm_ip_src_port_src_1",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src_port_src.bm_write_9"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "9"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_src_port_dst.t_bm_ip_src_port_dst_0",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src_port_dst.bm_write_10"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "A"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_src_port_dst.t_bm_ip_src_port_dst_1",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_src_port_dst.bm_write_11"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "B"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_src.t_bm_ip_dst_port_src_0",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_src.bm_write_12"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "C"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_src.t_bm_ip_dst_port_src_1",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_src.bm_write_13"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "D"	
+				}
+				]
+			}
+			]
+		}	  	
+	},		
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_dst.t_bm_ip_dst_port_dst_0",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_dst.bm_write_14"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "E"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.bm_ip_dst_port_dst.t_bm_ip_dst_port_dst_1",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.bm_ip_dst_port_dst.bm_write_15"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "F"	
+				}
+				]
+			}
+			]
+		}	  	
+	},		
+	{
+		"tableId": "c_ingress.ams.t_ams_0",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.ams.ams_write_16"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "10"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.ams.t_ams_1",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.ams.ams_write_17"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "11"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.ams.t_ams_2",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.ams.ams_write_18"
 			}
 			]
 		},
@@ -1739,7 +2189,7 @@
 		}	  	
 	},	
 	{
-		"tableId": "c_ingress.mv.t_mv_3",
+		"tableId": "c_ingress.ams.t_ams_final",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1750,7 +2200,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.mv.mv_write_19"
+				"actionId": "c_ingress.ams.ams_write_19"
 			}
 			]
 		},
@@ -1763,6 +2213,130 @@
 					"field": "current_register_temp",
 					"match": "exact",
 					"value": "13"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.mv.t_mv_0",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.mv.mv_write_20"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "14"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.mv.t_mv_1",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.mv.mv_write_21"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "15"	
+				}
+				]
+			}
+			]
+		}	  	
+	},
+	{
+		"tableId": "c_ingress.mv.t_mv_2",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.mv.mv_write_22"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "16"	
+				}
+				]
+			}
+			]
+		}	  	
+	},	
+	{
+		"tableId": "c_ingress.mv.t_mv_3",
+		"priority": 40000,
+		"timeout": 0,
+		"isPermanent": true,
+		"deviceId": "device:bmv2:s1",
+		"appId": "org.onosproject.p4dma.dma",
+		"treatment": {
+			"instructions": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"subtype": "ACTION",
+				"actionId": "c_ingress.mv.mv_write_23"
+			}
+			]
+		},
+		"selector": {
+			"criteria": [
+			{
+				"type": "PROTOCOL_INDEPENDENT",
+				"matches": [
+				{
+					"field": "current_register_temp",
+					"match": "exact",
+					"value": "17"	
 				}
 				]
 			}

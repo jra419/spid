@@ -1,23 +1,27 @@
 #!/bin/bash
 
-sudo trap "exit" INT TERM
-sudo trap "kill 0" EXIT
+cleanup() {
+	sudo pkill -f ml_
+	sudo pkill -f simple_switch_grpc
+	sudo pkill -f onos
+	bash veth_teardown.sh
+	exit
+}
+
+trap cleanup EXIT
 
 echo "--------------------"
 echo "Starting veth interfaces and cleaning up"
 echo "--------------------"
 
-sudo pkill -f simple_switch_grpc
-sudo pkill -f ml_
-
 sudo bash veth_teardown.sh
 sudo bash veth_setup.sh
 
 echo "--------------------"
-echo "ML python REST script: Isolation Forest"
+echo "ML python REST script"
 echo "--------------------"
 
-sudo python3 ml_isolation_forest.py &
+python3 ml_kmeans.py &
 
 sleep 10
 
@@ -29,7 +33,7 @@ cd ~/onos/
 
 sleep 5
 
-export ONOS_APPS=drivers.bmv2,proxyarp,lldpprovider,hostprovider,fwd,gui2,p4flowstats.pipeconf,p4flowstats.flowstats
+export ONOS_APPS=drivers.bmv2,proxyarp,lldpprovider,hostprovider,fwd,gui2,p4dma.pipeconf,p4dma.dma
 
 bazel run onos-local -- clean &
 
@@ -52,7 +56,7 @@ echo "--------------------"
 echo "Starting BMv2 switch"
 echo "--------------------"
 
-sudo simple_switch_grpc --device-id 1 -i 1@s1-eth1 -i 2@s1-eth2 --thrift-port 36869 -Lwarn --no-p4 -- --cpu-port 255 --grpc-server-addr 0.0.0.0:50001 > /dev/null &
+sudo simple_switch_grpc --device-id 1 -i 1@s1-eth2 --thrift-port 36869 -Lwarn --no-p4  -- --cpu-port 255 --grpc-server-addr 0.0.0.0:50001 > /dev/null &
 
 sleep 10
 
@@ -61,15 +65,15 @@ echo "Pushing netconf and host info to ONOS"
 echo "--------------------"
 
 netcfg="@$HOME/spid/netcfg.json"
-host1="@$HOME/spid/host1.json"
+# host1="@$HOME/spid/host1.json"
 host2="@$HOME/spid/host2.json"
-# sketches="@$HOME/spid/t_sketches_config.json"
+sketches="@$HOME/spid/t_sketches_config.json"
 
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $netcfg --user onos:rocks 'http://localhost:8181/onos/v1/network/configuration' 
 
-sleep 10
+# sleep 10
 
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $host1 --user onos:rocks 'http://localhost:8181/onos/v1/hosts' 
+# curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $host1 --user onos:rocks 'http://localhost:8181/onos/v1/hosts' 
 
 sleep 5
 
@@ -77,17 +81,17 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 
 sleep 5
 
-# curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $sketches --user onos:rocks 'http://localhost:8181/onos/v1/flows'
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $sketches --user onos:rocks 'http://localhost:8181/onos/v1/flows'
 
-# sleep 5
+sleep 5
 
-# echo "--------------------"
-# echo "Configuring P4 hash function polynomials"
-# echo "--------------------"
+echo "--------------------"
+echo "Configuring P4 hash function polynomials"
+echo "--------------------"
 
-# cd ~/spid/
+cd ~/spid/
 
-# ./runtime_cli_config.sh
+./runtime_cli_config.sh
 
 # echo "--------------------" 
 # echo "Running tcpreplay: Training set"
@@ -95,10 +99,14 @@ sleep 5
 
 # sudo tcpreplay -i s1-eth1 -K --limit=10000 --pps=100 $1
 
-echo "--------------------" 
-echo "Running tcpreplay: Test set"
-echo "--------------------"
+# echo "--------------------" 
+# echo "Running tcpreplay: Test set"
+# echo "--------------------"
 
-cd ~/Documents/
+# cd ~/Documents/
 
-sudo tcpreplay -i s1-eth1 -K --oneatatime $1
+# sudo tcpreplay -i s1-eth2 -K --pps=10 $1
+
+while :; do
+    sleep 5
+done
