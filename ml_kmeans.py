@@ -36,6 +36,7 @@ args = parser.parse_args()
 @app.route('/add/', methods=['POST'])
 def flowstats_rest():
     if request.method == 'POST':
+
         global norm
 
         decoded_data = request.data.decode('utf-8')
@@ -51,15 +52,19 @@ def preprocess(response):
     global norm
     global df
 
+    norm.fillna(value=0, inplace=True)
+
     norm1 = norm.reset_index(drop=True)
 
     # Temporary np array for comparison with the dataframe.
     # Contains packet flow statistics, excluding timestamp, packets, bytes, and sketch data.
     norm_np = np.array(norm1)
-    norm_np = np.delete(norm_np, [10, 11, 12, 13, 14, 15], axis=1)
+    norm_np = np.delete(norm_np, [0, 1, 10, 11, 12, 13, 14, 15, 16, 17, 18], axis=1)
 
-    list_pb = request_pb(str(norm_np[0, 2]), str(norm_np[0, 3]), str(norm_np[0, 4]),
-                         str(norm_np[0, 5]), str(norm_np[0, 6]))
+    list_pb = request_pb(str(norm_np[0, 0]), str(norm_np[0, 1]))
+
+    if list_pb[0] == '0' or list_pb[1] == '0':
+        return response
 
     norm.insert(0, 'bytes', list_pb[1])
     norm.insert(0, 'packets', list_pb[0])
@@ -72,14 +77,24 @@ def preprocess(response):
     # Check if the new current packet already exists in the dataframe.
     # If so, update the existing flow sketch and current timestamp values.
     # Else, simply append the current flow statistics (the packet doesn't exist in the dataframe).
-    if (df[df.columns[4:14]] == norm_np).all(1).any():
-        df.loc[
-            (df['ip_src'] == norm['ip_src']) & (df['ip_dst'] == norm['ip_dst'])
-            & (df['ip_proto'] == norm['ip_proto']) & (df['port_src'] == norm['port_src'])
-            & (df['port_dst'] == norm['port_dst']) & (df['tcp_flags'] == norm['tcp_flags'])
-            & (df['icmp_type'] == norm['icmp_type']) & (df['icmp_code'] == norm['icmp_code']),
-            ['current_ts', 'packets', 'bytes', 'cm_5t', 'cm_ip', 'bm_src', 'bm_dst', 'ams', 'mv']
-        ] = norm['current_ts', 'packets', 'bytes', 'cm_5t', 'cm_ip', 'bm_src', 'bm_dst', 'ams', 'mv']
+    if (df[df.columns[4:12]] == norm_np).all(1).any():
+        m = (df['ip_src'].values == norm['ip_src'].values) & (df['ip_dst'].values == norm['ip_dst'].values)\
+            & (df['ip_proto'].values == norm['ip_proto'].values) & (df['port_src'].values == norm['port_src'].values)\
+            & (df['port_dst'].values == norm['port_dst'].values) & (df['tcp_flags'].values == norm['tcp_flags'].values)\
+            & (df['icmp_type'].values == norm['icmp_type'].values)\
+            & (df['icmp_code'].values == norm['icmp_code'].values)
+        df.loc[m, ['current_ts']] = norm['current_ts'].values
+        df.loc[m, ['packets']] = norm['packets'].values
+        df.loc[m, ['bytes']] = norm['bytes'].values
+        df.loc[m, ['cm']] = norm['cm'].values
+        df.loc[m, ['bm_ip_src']] = norm['bm_ip_src'].values
+        df.loc[m, ['bm_ip_dst']] = norm['bm_ip_dst'].values
+        df.loc[m, ['bm_ip_src_port_src']] = norm['bm_ip_src_port_src'].values
+        df.loc[m, ['bm_ip_src_port_dst']] = norm['bm_ip_src_port_dst'].values
+        df.loc[m, ['bm_ip_dst_port_src']] = norm['bm_ip_dst_port_src'].values
+        df.loc[m, ['bm_ip_dst_port_dst']] = norm['bm_ip_dst_port_dst'].values
+        df.loc[m, ['ams']] = norm['ams'].values
+        df.loc[m, ['mv']] = norm['mv'].values
     else:
         df = df.append(norm, ignore_index=True)
 
@@ -94,7 +109,7 @@ def preprocess(response):
     return response
 
 
-def request_pb(ip_src, ip_dst, ip_proto, src_port, dst_port):
+def request_pb(ip_src, ip_dst):
     headers = {
         'Accept': 'application/json',
     }
@@ -109,11 +124,8 @@ def request_pb(ip_src, ip_dst, ip_proto, src_port, dst_port):
         '\\"criteria\\":\\[{\\"type\\":\\"IN_PORT\\",\\"port\\":\\d+},{\\"type\\":\\"ETH_DST\\",' \
         '\\"mac\\":\\"\\w+:\\w+:\\w+:\\w+:\\w+:\\w+\\"},{\\"type\\":\\"ETH_SRC\\",' \
         '\\"mac\\":\\"\\w+:\\w+:\\w+:\\w+:\\w+:\\w+\\"},{\\"type\\":\\"ETH_TYPE\\",' \
-        '\\"ethType\\":\\"\\w+\\"},{\\"type\\":\\"IP_PROTO\\",\\"protocol\\":' \
-        + ip_proto + '},{\\"type\\":\\"IPV4_SRC\\",\\"ip\\":\\"' \
-        + ip_src + '\\/\\d+\\"},{\\"type\\":\\"IPV4_DST\\",\\"ip\\":\\"' \
-        + ip_dst + '\\/\\d+\\"},{\\"type\\":\\"....SRC\\",\\"\\w+\\":' \
-        + src_port + '},{\\"type\\":\\"....DST\\",\\"\\w+\\":' + dst_port + ''
+        '\\"ethType\\":\\"\\w+\\"},{\\"type\\":\\"IPV4_SRC\\",\\"ip\\":\\"' \
+        + ip_src + '\\/\\d+\\"},{\\"type\\":\\"IPV4_DST\\",\\"ip\\":\\"' + ip_dst
 
     regex_packets = 'packets\\":\\d+'
     regex_bytes = 'bytes\\":\\d+'
@@ -193,37 +205,27 @@ def k_means():
     del flowstats['initial_ts']
     del flowstats['current_ts']
 
-    flowstats_cm_5t = \
-        flowstats_cm_ip = \
-        flowstats_bm_src = \
-        flowstats_bm_dst = \
-        flowstats_ams = \
-        flowstats_simple = \
-        flowstats.copy()
-
-    flowstats_cm_5t = flowstats_cm_5t.drop(['cm_ip', 'bm_src', 'bm_dst', 'ams', 'mv'], axis=1)
-    flowstats_cm_ip = flowstats_cm_ip.drop(['cm_5t', 'bm_src', 'bm_dst', 'ams', 'mv'], axis=1)
-    flowstats_bm_src = flowstats_bm_src.drop(['cm_5t', 'cm_ip', 'bm_dst', 'ams', 'mv'], axis=1)
-    flowstats_bm_dst = flowstats_bm_dst.drop(['cm_5t', 'cm_ip', 'bm_src', 'ams', 'mv'], axis=1)
-    flowstats_ams = flowstats_ams.drop(['cm_5t', 'cm_ip', 'bm_src', 'bm_dst', 'mv'], axis=1)
-    flowstats_simple = flowstats_simple.drop(['cm_5t', 'cm_ip', 'bm_src', 'bm_dst', 'ams', 'mv'], axis=1)
+    flowstats_simple = flowstats.copy()
+    flowstats_simple = flowstats_simple.drop(['cm', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
+                                              'bm_ip_src_port_dst', 'bm_ip_dst_port_src', 'bm_ip_dst_port_dst',
+                                              'ams', 'mv'], axis=1)
 
     # Data Normalization: Non-Numerical Values
 
+    flowstats_norm = flowstats.copy()
+
     ip_encoder = preprocessing.LabelEncoder()
 
-    label_encoding = flowstats['ip_src'].append(flowstats['ip_dst'])
+    label_encoding = flowstats_norm['ip_src'].append(flowstats_norm['ip_dst'])
 
     ip_encoder.fit(label_encoding)
-    src_ip = ip_encoder.transform(flowstats['ip_src'])
-    dst_ip = ip_encoder.transform(flowstats['ip_dst'])
+    src_ip = ip_encoder.transform(flowstats_norm['ip_src'])
+    dst_ip = ip_encoder.transform(flowstats_norm['ip_dst'])
 
-    flowstats['ip_src'] = src_ip
-    flowstats['ip_dst'] = dst_ip
+    flowstats_norm['ip_src'] = src_ip
+    flowstats_norm['ip_dst'] = dst_ip
 
     # Data Normalization: Value Scaling
-
-    flowstats_norm = flowstats.copy()
 
     scaled_packets = MinMaxScaler().fit_transform(flowstats_norm['packets'].values.reshape(-1, 1))
     scaled_bytes = MinMaxScaler().fit_transform(flowstats_norm['bytes'].values.reshape(-1, 1))
@@ -232,10 +234,16 @@ def k_means():
     scaled_ip_proto = MinMaxScaler().fit_transform(flowstats_norm['ip_proto'].values.reshape(-1, 1))
     scaled_src_port = MinMaxScaler().fit_transform(flowstats_norm['port_src'].values.reshape(-1, 1))
     scaled_dst_port = MinMaxScaler().fit_transform(flowstats_norm['port_dst'].values.reshape(-1, 1))
-    scaled_cm_5t = MinMaxScaler().fit_transform(flowstats_norm['cm_5t'].values.reshape(-1, 1))
-    scaled_cm_ip = MinMaxScaler().fit_transform(flowstats_norm['cm_ip'].values.reshape(-1, 1))
-    scaled_bm_src = MinMaxScaler().fit_transform(flowstats_norm['bm_src'].values.reshape(-1, 1))
-    scaled_bm_dst = MinMaxScaler().fit_transform(flowstats_norm['bm_dst'].values.reshape(-1, 1))
+    scaled_tcp_flags = MinMaxScaler().fit_transform(flowstats_norm['tcp_flags'].values.reshape(-1, 1))
+    scaled_icmp_type = MinMaxScaler().fit_transform(flowstats_norm['icmp_type'].values.reshape(-1, 1))
+    scaled_icmp_code = MinMaxScaler().fit_transform(flowstats_norm['icmp_code'].values.reshape(-1, 1))
+    scaled_cm = MinMaxScaler().fit_transform(flowstats_norm['cm'].values.reshape(-1, 1))
+    scaled_bm_ip_src = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_src'].values.reshape(-1, 1))
+    scaled_bm_ip_dst = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_dst'].values.reshape(-1, 1))
+    scaled_bm_ip_src_port_src = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_src_port_src'].values.reshape(-1, 1))
+    scaled_bm_ip_src_port_dst = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_src_port_dst'].values.reshape(-1, 1))
+    scaled_bm_ip_dst_port_src = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_dst_port_src'].values.reshape(-1, 1))
+    scaled_bm_ip_dst_port_dst = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_dst_port_dst'].values.reshape(-1, 1))
     scaled_ams = MinMaxScaler().fit_transform(flowstats_norm['ams'].values.reshape(-1, 1))
     scaled_mv = MinMaxScaler().fit_transform(flowstats_norm['mv'].values.reshape(-1, 1))
 
@@ -246,131 +254,56 @@ def k_means():
     flowstats_norm['ip_proto'] = scaled_ip_proto
     flowstats_norm['port_src'] = scaled_src_port
     flowstats_norm['port_dst'] = scaled_dst_port
-    flowstats_norm['cm_5t'] = scaled_cm_5t
-    flowstats_norm['cm_ip'] = scaled_cm_ip
-    flowstats_norm['bm_src'] = scaled_bm_src
-    flowstats_norm['bm_dst'] = scaled_bm_dst
+    flowstats_norm['tcp_flags'] = scaled_tcp_flags
+    flowstats_norm['icmp_type'] = scaled_icmp_type
+    flowstats_norm['icmp_code'] = scaled_icmp_code
+    flowstats_norm['cm'] = scaled_cm
+    flowstats_norm['bm_ip_src'] = scaled_bm_ip_src
+    flowstats_norm['bm_ip_dst'] = scaled_bm_ip_dst
+    flowstats_norm['bm_ip_src_port_src'] = scaled_bm_ip_src_port_src
+    flowstats_norm['bm_ip_src_port_dst'] = scaled_bm_ip_src_port_dst
+    flowstats_norm['bm_ip_dst_port_src'] = scaled_bm_ip_dst_port_src
+    flowstats_norm['bm_ip_dst_port_dst'] = scaled_bm_ip_dst_port_dst
     flowstats_norm['ams'] = scaled_ams
     flowstats_norm['mv'] = scaled_mv
 
-    flowstats_norm_cm_5t = \
-        flowstats_norm_cm_ip = \
-        flowstats_norm_bm_src = \
-        flowstats_norm_bm_dst = \
-        flowstats_norm_ams = \
-        flowstats_norm_simple = \
-        flowstats_norm.copy()
-
-    flowstats_norm_cm_5t = flowstats_norm_cm_5t.drop(['cm_ip', 'bm_src', 'bm_dst', 'ams', 'mv'], axis=1)
-    flowstats_norm_cm_ip = flowstats_norm_cm_ip.drop(['cm_5t', 'bm_src', 'bm_dst', 'ams', 'mv'], axis=1)
-    flowstats_norm_bm_src = flowstats_norm_bm_src.drop(['cm_5t', 'cm_ip', 'bm_dst', 'ams', 'mv'], axis=1)
-    flowstats_norm_bm_dst = flowstats_norm_bm_dst.drop(['cm_5t', 'cm_ip', 'bm_src', 'ams', 'mv'], axis=1)
-    flowstats_norm_ams = flowstats_norm_ams.drop(['cm_5t', 'cm_ip', 'bm_src', 'bm_dst', 'mv'], axis=1)
-    flowstats_norm_simple = flowstats_norm_simple.drop(['cm_5t', 'cm_ip', 'bm_src', 'bm_dst', 'ams', 'mv'], axis=1)
+    flowstats_norm_simple = flowstats_norm.copy()
+    flowstats_norm_simple = flowstats_norm_simple.drop(['cm', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
+                                                        'bm_ip_src_port_dst', 'bm_ip_dst_port_src',
+                                                        'bm_ip_dst_port_dst', 'ams', 'mv'], axis=1)
 
     # Elbow Method calculation
 
     n_clusters_all = elbow_method(flowstats_norm)
-    n_clusters_cm_5t = elbow_method(flowstats_norm_cm_5t)
-    n_clusters_cm_ip = elbow_method(flowstats_norm_cm_5t)
-    n_clusters_bm_src = elbow_method(flowstats_norm_bm_src)
-    n_clusters_bm_dst = elbow_method(flowstats_norm_bm_dst)
-    n_clusters_ams = elbow_method(flowstats_norm_ams)
     n_clusters_simple = elbow_method(flowstats_norm_simple)
 
-    print('\nBest n_clusters for FLOWSTATS_NORMALIZED_ALL:  ', n_clusters_all)
-    print('Best n_clusters for FLOWSTATS_NORMALIZED_CM_5T:  ', n_clusters_cm_5t)
-    print('Best n_clusters for FLOWSTATS_NORMALIZED_CM_IP:  ', n_clusters_cm_ip)
-    print('Best n_clusters for FLOWSTATS_NORMALIZED_BM_SRC: ', n_clusters_bm_src)
-    print('Best n_clusters for FLOWSTATS_NORMALIZED_BM_DST: ', n_clusters_bm_dst)
-    print('Best n_clusters for FLOWSTATS_NORMALIZED_AMS:    ', n_clusters_ams)
-    print('Best n_clusters for FLOWSTATS_NORMALIZED_SIMPLE: ', n_clusters_simple)
+    # print('\nBest n_clusters for FLOWSTATS_NORMALIZED_ALL:  ', n_clusters_all)
+    # print('Best n_clusters for FLOWSTATS_NORMALIZED_SIMPLE: ', n_clusters_simple)
 
     y = np.array(flowstats)
-    y_cm_5t = np.array(flowstats_cm_5t)
-    y_cm_ip = np.array(flowstats_cm_ip)
-    y_bm_src = np.array(flowstats_bm_src)
-    y_bm_dst = np.array(flowstats_bm_dst)
-    y_ams = np.array(flowstats_ams)
     y_simple = np.array(flowstats_simple)
 
     x_pca = PCA(n_components=2, whiten=True).fit_transform(flowstats_norm)
-    x_cm_5t_pca = PCA(n_components=2, whiten=True).fit_transform(flowstats_norm_cm_5t)
-    x_cm_ip_pca = PCA(n_components=2, whiten=True).fit_transform(flowstats_norm_cm_ip)
-    x_bm_src_pca = PCA(n_components=2, whiten=True).fit_transform(flowstats_norm_bm_src)
-    x_bm_dst_pca = PCA(n_components=2, whiten=True).fit_transform(flowstats_norm_bm_dst)
-    x_ams_pca = PCA(n_components=2, whiten=True).fit_transform(flowstats_norm_ams)
     x_simple_pca = PCA(n_components=2, whiten=True).fit_transform(flowstats_norm_simple)
 
     x_pca_x = np.array(x_pca[:, 0])
     x_pca_y = np.array(x_pca[:, 1])
-
-    x_cm_5t_pca_x = np.array(x_cm_5t_pca[:, 0])
-    x_cm_5t_pca_y = np.array(x_cm_5t_pca[:, 1])
-
-    x_cm_ip_pca_x = np.array(x_cm_ip_pca[:, 0])
-    x_cm_ip_pca_y = np.array(x_cm_ip_pca[:, 1])
-
-    x_bm_src_pca_x = np.array(x_bm_src_pca[:, 0])
-    x_bm_src_pca_y = np.array(x_bm_src_pca[:, 1])
-
-    x_bm_dst_pca_x = np.array(x_bm_dst_pca[:, 0])
-    x_bm_dst_pca_y = np.array(x_bm_dst_pca[:, 1])
-
-    x_ams_pca_x = np.array(x_ams_pca[:, 0])
-    x_ams_pca_y = np.array(x_ams_pca[:, 1])
 
     x_simple_pca_x = np.array(x_simple_pca[:, 0])
     x_simple_pca_y = np.array(x_simple_pca[:, 1])
 
     # Fitting the input data
 
-    km = KMeans(n_clusters=n_clusters_all, init='k-means++', max_iter=1000, n_init=20).fit(
-        flowstats_norm)
-    km_cm_5t = KMeans(n_clusters=n_clusters_cm_5t, init='k-means++', max_iter=1000, n_init=20).fit(
-        flowstats_norm_cm_5t)
-    km_cm_ip = KMeans(n_clusters=n_clusters_cm_ip, init='k-means++', max_iter=1000, n_init=20).fit(
-        flowstats_norm_cm_ip)
-    km_bm_src = KMeans(n_clusters=n_clusters_bm_src, init='k-means++', max_iter=1000, n_init=20).fit(
-        flowstats_norm_bm_src)
-    km_bm_dst = KMeans(n_clusters=n_clusters_bm_dst, init='k-means++', max_iter=1000, n_init=20).fit(
-        flowstats_norm_bm_dst)
-    km_ams = KMeans(n_clusters=n_clusters_ams, init='k-means++', max_iter=1000, n_init=20).fit(
-        flowstats_norm_ams)
+    km = KMeans(n_clusters=n_clusters_all, init='k-means++', max_iter=1000, n_init=20).fit(flowstats_norm)
     km_simple = KMeans(n_clusters=n_clusters_simple, init='k-means++', max_iter=1000, n_init=20).fit(
         flowstats_norm_simple)
 
     labels = km.predict(flowstats_norm)
-    labels_cm_5t = km_cm_5t.predict(flowstats_norm_cm_5t)
-    labels_cm_ip = km_cm_ip.predict(flowstats_norm_cm_ip)
-    labels_bm_src = km_bm_src.predict(flowstats_norm_bm_src)
-    labels_bm_dst = km_bm_dst.predict(flowstats_norm_bm_dst)
-    labels_ams = km_ams.predict(flowstats_norm_ams)
     labels_simple = km_simple.predict(flowstats_norm_simple)
 
     flowstats_final = np.insert(y, y.shape[1], labels, axis=1)
     flowstats_final = np.insert(flowstats_final, flowstats_final.shape[1], x_pca_x, axis=1)
     flowstats_final = np.insert(flowstats_final, flowstats_final.shape[1], x_pca_y, axis=1)
-
-    flowstats_final_cm_5t = np.insert(y_cm_5t, y_cm_5t.shape[1], labels_cm_5t, axis=1)
-    flowstats_final_cm_5t = np.insert(flowstats_final_cm_5t, flowstats_final_cm_5t.shape[1], x_cm_5t_pca_x, axis=1)
-    flowstats_final_cm_5t = np.insert(flowstats_final_cm_5t, flowstats_final_cm_5t.shape[1], x_cm_5t_pca_y, axis=1)
-
-    flowstats_final_cm_ip = np.insert(y_cm_ip, y_cm_ip.shape[1], labels_cm_ip, axis=1)
-    flowstats_final_cm_ip = np.insert(flowstats_final_cm_ip, flowstats_final_cm_ip.shape[1], x_cm_ip_pca_x, axis=1)
-    flowstats_final_cm_ip = np.insert(flowstats_final_cm_ip, flowstats_final_cm_ip.shape[1], x_cm_ip_pca_y, axis=1)
-
-    flowstats_final_bm_src = np.insert(y_bm_src, y_bm_src.shape[1], labels_bm_src, axis=1)
-    flowstats_final_bm_src = np.insert(flowstats_final_bm_src, flowstats_final_bm_src.shape[1], x_bm_src_pca_x, axis=1)
-    flowstats_final_bm_src = np.insert(flowstats_final_bm_src, flowstats_final_bm_src.shape[1], x_bm_src_pca_y, axis=1)
-
-    flowstats_final_bm_dst = np.insert(y_bm_dst, y_bm_dst.shape[1], labels_bm_dst, axis=1)
-    flowstats_final_bm_dst = np.insert(flowstats_final_bm_dst, flowstats_final_bm_dst.shape[1], x_bm_dst_pca_x, axis=1)
-    flowstats_final_bm_dst = np.insert(flowstats_final_bm_dst, flowstats_final_bm_dst.shape[1], x_bm_dst_pca_y, axis=1)
-
-    flowstats_final_ams = np.insert(y_ams, y_ams.shape[1], labels_ams, axis=1)
-    flowstats_final_ams = np.insert(flowstats_final_ams, flowstats_final_ams.shape[1], x_ams_pca_x, axis=1)
-    flowstats_final_ams = np.insert(flowstats_final_ams, flowstats_final_ams.shape[1], x_ams_pca_y, axis=1)
 
     flowstats_final_simple = np.insert(y_simple, y_simple.shape[1], labels_simple, axis=1)
     flowstats_final_simple = np.insert(flowstats_final_simple, flowstats_final_simple.shape[1], x_simple_pca_x, axis=1)
@@ -389,61 +322,13 @@ def k_means():
 
     df_final = pd.DataFrame(flowstats_final,
                             columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src', 'port_dst',
-                                     'tcp_flags',
-                                     'icmp_type', 'icmp_code', 'cm_5t', 'cm_ip', 'bm_src', 'bm_dst', 'ams', 'mv',
-                                     'cluster',
-                                     'cluster_cord_x', 'cluster_cord_y'])
+                                     'tcp_flags', 'icmp_type', 'icmp_code', 'cm', 'bm_ip_src', 'bm_ip_dst',
+                                     'bm_ip_src_port_src', 'bm_ip_src_port_dst', 'bm_ip_dst_port_src',
+                                     'bm_ip_dst_port_src', 'ams', 'mv', 'cluster', 'cluster_cord_x', 'cluster_cord_y'])
     df_final.insert(2, 'initial_ts', df['initial_ts'])
     df_final.insert(3, 'current_ts', df['current_ts'])
     outpath = os.path.join(outdir, time_datetime + '-flowstats.csv')
     df_final.to_csv(outpath, index=False)
-
-    df_final_cm_5t = pd.DataFrame(flowstats_final_cm_5t,
-                                  columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src', 'port_dst',
-                                           'tcp_flags', 'icmp_type', 'icmp_code', 'cm_5t', 'cluster', 'cluster_cord_x',
-                                           'cluster_cord_y'])
-    df_final_cm_5t.insert(2, 'initial_ts', df['initial_ts'])
-    df_final_cm_5t.insert(3, 'current_ts', df['current_ts'])
-    outpath = os.path.join(outdir, time_datetime + '-flowstats-cm-5t.csv')
-    df_final_cm_5t.to_csv(outpath, index=False)
-
-    df_final_cm_ip = pd.DataFrame(flowstats_final_cm_ip,
-                                  columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src', 'port_dst',
-                                           'tcp_flags', 'icmp_type', 'icmp_code', 'cm_ip', 'cluster', 'cluster_cord_x',
-                                           'cluster_cord_y'])
-    df_final_cm_ip.insert(2, 'initial_ts', df['initial_ts'])
-    df_final_cm_ip.insert(3, 'current_ts', df['current_ts'])
-    outpath = os.path.join(outdir, time_datetime + '-flowstats-cm-ip.csv.csv')
-    df_final_cm_ip.to_csv(outpath, index=False)
-
-    df_final_bm_src = pd.DataFrame(flowstats_final_bm_src,
-                                   columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src', 'port_dst',
-                                            'tcp_flags', 'icmp_type', 'icmp_code', 'bm_src', 'cluster',
-                                            'cluster_cord_x',
-                                            'cluster_cord_y'])
-    df_final_bm_src.insert(2, 'initial_ts', df['initial_ts'])
-    df_final_bm_src.insert(3, 'current_ts', df['current_ts'])
-    outpath = os.path.join(outdir, time_datetime + '-flowstats-bm-src.csv')
-    df_final_bm_src.to_csv(outpath, index=False)
-
-    df_final_bm_dst = pd.DataFrame(flowstats_final_bm_dst,
-                                   columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src', 'port_dst',
-                                            'tcp_flags', 'icmp_type', 'icmp_code', 'bm_dst', 'cluster',
-                                            'cluster_cord_x',
-                                            'cluster_cord_y'])
-    df_final_bm_dst.insert(2, 'initial_ts', df['initial_ts'])
-    df_final_bm_dst.insert(3, 'current_ts', df['current_ts'])
-    outpath = os.path.join(outdir, time_datetime + '-flowstats-bm-dst.csv')
-    df_final_bm_dst.to_csv(outpath, index=False)
-
-    df_final_ams = pd.DataFrame(flowstats_final_ams,
-                                columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src', 'port_dst',
-                                         'tcp_flags', 'icmp_type', 'icmp_code', 'ams', 'cluster', 'cluster_cord_x',
-                                         'cluster_cord_y'])
-    df_final_ams.insert(2, 'initial_ts', df['initial_ts'])
-    df_final_ams.insert(3, 'current_ts', df['current_ts'])
-    outpath = os.path.join(outdir, time_datetime + '-flowstats-ams.csv')
-    df_final_ams.to_csv(outpath, index=False)
 
     df_final_simple = pd.DataFrame(flowstats_final_simple,
                                    columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src', 'port_dst',
@@ -468,58 +353,13 @@ def k_means():
         ax1.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
         plt.figure(2)
-        ax2 = plt.subplot(title="K-means: Count-min 5T Sketch")
-        cmap = plt.cm.get_cmap('tab20')
-        for i, cluster in df_final_cm_5t.groupby('cluster'):
-            _ = ax2.scatter(cluster['cluster_cord_x'], cluster['cluster_cord_y'],
-                            c=[cmap(i / n_clusters_cm_5t)], label=i)
-        ax2.axis('auto')
-        ax2.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-        plt.figure(3)
-        ax3 = plt.subplot(title="K-means: Count-min IP Sketch")
-        cmap = plt.cm.get_cmap('tab20')
-        for i, cluster in df_final_cm_ip.groupby('cluster'):
-            _ = ax3.scatter(cluster['cluster_cord_x'], cluster['cluster_cord_y'],
-                            c=[cmap(i / n_clusters_cm_ip)], label=i)
-        ax3.axis('auto')
-        ax3.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-        plt.figure(4)
-        ax4 = plt.subplot(title="K-means: Bitmap Sketch (Source)")
-        cmap = plt.cm.get_cmap('tab20')
-        for i, cluster in df_final_bm_src.groupby('cluster'):
-            _ = ax4.scatter(cluster['cluster_cord_x'], cluster['cluster_cord_y'],
-                            c=[cmap(i / n_clusters_bm_src)], label=i)
-        ax4.axis('auto')
-        ax4.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-        plt.figure(5)
-        ax5 = plt.subplot(title="K-means: Bitmap Sketch (Destination)")
-        cmap = plt.cm.get_cmap('tab20')
-        for i, cluster in df_final_bm_dst.groupby('cluster'):
-            _ = ax5.scatter(cluster['cluster_cord_x'], cluster['cluster_cord_y'],
-                            c=[cmap(i / n_clusters_bm_dst)], label=i)
-        ax5.axis('auto')
-        ax5.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-        plt.figure(6)
-        ax6 = plt.subplot(title="K-means: AMS Sketch")
-        cmap = plt.cm.get_cmap('tab20')
-        for i, cluster in df_final_ams.groupby('cluster'):
-            _ = ax6.scatter(cluster['cluster_cord_x'], cluster['cluster_cord_y'],
-                            c=[cmap(i / n_clusters_ams)], label=i)
-        ax6.axis('auto')
-        ax6.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-        plt.figure(7)
-        ax7 = plt.subplot(title="K-means: Packets/Bytes")
+        ax2 = plt.subplot(title="K-means: Packets/Bytes")
         cmap = plt.cm.get_cmap('tab20')
         for i, cluster in df_final_simple.groupby('cluster'):
-            _ = ax7.scatter(cluster['cluster_cord_x'], cluster['cluster_cord_y'],
+            _ = ax2.scatter(cluster['cluster_cord_x'], cluster['cluster_cord_y'],
                             c=[cmap(i / n_clusters_simple)], label=i)
-        ax7.axis('auto')
-        ax7.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+        ax2.axis('auto')
+        ax2.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
         plt.show()
 
