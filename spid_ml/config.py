@@ -5,13 +5,23 @@ import argparse
 
 df = pd.DataFrame()
 norm = pd.DataFrame()
+flowstats = pd.DataFrame()
+flowstats_simple = pd.DataFrame()
+flowstats_norm = pd.DataFrame()
+flowstats_norm_simple = pd.DataFrame()
 
-parser = argparse.ArgumentParser(description='Flowstats script args.')
+parser = argparse.ArgumentParser(description='SPID ML pipeline script args.')
 
 parser.add_argument(
     '--plot',
-    default=False,
-    help='Specify that the script should generate cluster plots. (Default: False)'
-)
+    action='store_true')
+
+parser.add_argument(
+    '--kmeans',
+    action='store_true')
+
+parser.add_argument(
+    '--dbscan',
+    action='store_true')
 
 args = parser.parse_args()

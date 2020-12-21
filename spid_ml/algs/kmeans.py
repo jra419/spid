@@ -4,10 +4,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
-from sklearn import preprocessing
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
-from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
 
 plt.style.use('seaborn')
@@ -68,91 +66,19 @@ def silhouette(flowstats):
 
 
 def kmeans():
-    flowstats = config.df.copy()
-
-    del flowstats['initial_ts']
-    del flowstats['current_ts']
-
-    flowstats_simple = flowstats.copy()
-    flowstats_simple = flowstats_simple.drop(['cm', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
-                                              'bm_ip_src_port_dst', 'bm_ip_dst_port_src', 'bm_ip_dst_port_dst',
-                                              'ams', 'mv'], axis=1)
-
-    # Data Normalization: Non-Numerical Values
-
-    flowstats_norm = flowstats.copy()
-
-    ip_encoder = preprocessing.LabelEncoder()
-
-    label_encoding = flowstats_norm['ip_src'].append(flowstats_norm['ip_dst'])
-
-    ip_encoder.fit(label_encoding)
-    src_ip = ip_encoder.transform(flowstats_norm['ip_src'])
-    dst_ip = ip_encoder.transform(flowstats_norm['ip_dst'])
-
-    flowstats_norm['ip_src'] = src_ip
-    flowstats_norm['ip_dst'] = dst_ip
-
-    # Data Normalization: Value Scaling
-
-    scaled_packets = MinMaxScaler().fit_transform(flowstats_norm['packets'].values.reshape(-1, 1))
-    scaled_bytes = MinMaxScaler().fit_transform(flowstats_norm['bytes'].values.reshape(-1, 1))
-    scaled_src_ip = MinMaxScaler().fit_transform(flowstats_norm['ip_src'].values.reshape(-1, 1))
-    scaled_dst_ip = MinMaxScaler().fit_transform(flowstats_norm['ip_dst'].values.reshape(-1, 1))
-    scaled_ip_proto = MinMaxScaler().fit_transform(flowstats_norm['ip_proto'].values.reshape(-1, 1))
-    scaled_src_port = MinMaxScaler().fit_transform(flowstats_norm['port_src'].values.reshape(-1, 1))
-    scaled_dst_port = MinMaxScaler().fit_transform(flowstats_norm['port_dst'].values.reshape(-1, 1))
-    scaled_tcp_flags = MinMaxScaler().fit_transform(flowstats_norm['tcp_flags'].values.reshape(-1, 1))
-    scaled_icmp_type = MinMaxScaler().fit_transform(flowstats_norm['icmp_type'].values.reshape(-1, 1))
-    scaled_icmp_code = MinMaxScaler().fit_transform(flowstats_norm['icmp_code'].values.reshape(-1, 1))
-    scaled_cm = MinMaxScaler().fit_transform(flowstats_norm['cm'].values.reshape(-1, 1))
-    scaled_bm_ip_src = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_src'].values.reshape(-1, 1))
-    scaled_bm_ip_dst = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_dst'].values.reshape(-1, 1))
-    scaled_bm_ip_src_port_src = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_src_port_src'].values.reshape(-1, 1))
-    scaled_bm_ip_src_port_dst = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_src_port_dst'].values.reshape(-1, 1))
-    scaled_bm_ip_dst_port_src = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_dst_port_src'].values.reshape(-1, 1))
-    scaled_bm_ip_dst_port_dst = MinMaxScaler().fit_transform(flowstats_norm['bm_ip_dst_port_dst'].values.reshape(-1, 1))
-    scaled_ams = MinMaxScaler().fit_transform(flowstats_norm['ams'].values.reshape(-1, 1))
-    scaled_mv = MinMaxScaler().fit_transform(flowstats_norm['mv'].values.reshape(-1, 1))
-
-    flowstats_norm['packets'] = scaled_packets
-    flowstats_norm['bytes'] = scaled_bytes
-    flowstats_norm['ip_src'] = scaled_src_ip
-    flowstats_norm['ip_dst'] = scaled_dst_ip
-    flowstats_norm['ip_proto'] = scaled_ip_proto
-    flowstats_norm['port_src'] = scaled_src_port
-    flowstats_norm['port_dst'] = scaled_dst_port
-    flowstats_norm['tcp_flags'] = scaled_tcp_flags
-    flowstats_norm['icmp_type'] = scaled_icmp_type
-    flowstats_norm['icmp_code'] = scaled_icmp_code
-    flowstats_norm['cm'] = scaled_cm
-    flowstats_norm['bm_ip_src'] = scaled_bm_ip_src
-    flowstats_norm['bm_ip_dst'] = scaled_bm_ip_dst
-    flowstats_norm['bm_ip_src_port_src'] = scaled_bm_ip_src_port_src
-    flowstats_norm['bm_ip_src_port_dst'] = scaled_bm_ip_src_port_dst
-    flowstats_norm['bm_ip_dst_port_src'] = scaled_bm_ip_dst_port_src
-    flowstats_norm['bm_ip_dst_port_dst'] = scaled_bm_ip_dst_port_dst
-    flowstats_norm['ams'] = scaled_ams
-    flowstats_norm['mv'] = scaled_mv
-
-    flowstats_norm_simple = flowstats_norm.copy()
-    flowstats_norm_simple = flowstats_norm_simple.drop(['cm', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
-                                                        'bm_ip_src_port_dst', 'bm_ip_dst_port_src',
-                                                        'bm_ip_dst_port_dst', 'ams', 'mv'], axis=1)
-
     # Elbow Method calculation
 
-    n_clusters_all = elbow_method(flowstats_norm)
-    n_clusters_simple = elbow_method(flowstats_norm_simple)
+    n_clusters_all = elbow_method(config.flowstats_norm)
+    n_clusters_simple = elbow_method(config.flowstats_norm_simple)
 
     # print('\nBest n_clusters for FLOWSTATS_NORMALIZED_ALL:  ', n_clusters_all)
     # print('Best n_clusters for FLOWSTATS_NORMALIZED_SIMPLE: ', n_clusters_simple)
 
-    y = np.array(flowstats)
-    y_simple = np.array(flowstats_simple)
+    y = np.array(config.flowstats)
+    y_simple = np.array(config.flowstats_simple)
 
-    x_pca = PCA(n_components=2, whiten=True).fit_transform(flowstats_norm)
-    x_simple_pca = PCA(n_components=2, whiten=True).fit_transform(flowstats_norm_simple)
+    x_pca = PCA(n_components=2, whiten=True).fit_transform(config.flowstats_norm)
+    x_simple_pca = PCA(n_components=2, whiten=True).fit_transform(config.flowstats_norm_simple)
 
     x_pca_x = np.array(x_pca[:, 0])
     x_pca_y = np.array(x_pca[:, 1])
@@ -162,12 +88,14 @@ def kmeans():
 
     # Fitting the input data
 
-    km = KMeans(n_clusters=n_clusters_all, init='k-means++', max_iter=1000, n_init=20).fit(flowstats_norm)
+    km = KMeans(n_clusters=n_clusters_all, init='k-means++', max_iter=1000, n_init=20).fit(config.flowstats_norm)
     km_simple = KMeans(n_clusters=n_clusters_simple, init='k-means++', max_iter=1000, n_init=20).fit(
-        flowstats_norm_simple)
+        config.flowstats_norm_simple)
 
-    labels = km.predict(flowstats_norm)
-    labels_simple = km_simple.predict(flowstats_norm_simple)
+    labels = km.predict(config.flowstats_norm)
+    labels_simple = km_simple.predict(config.flowstats_norm_simple)
+
+    centroids = km.cluster_centers_
 
     flowstats_final = np.insert(y, y.shape[1], labels, axis=1)
     flowstats_final = np.insert(flowstats_final, flowstats_final.shape[1], x_pca_x, axis=1)
@@ -196,8 +124,11 @@ def kmeans():
                                             'cluster_cord_y'])
     df_final.insert(2, 'initial_ts', config.df['initial_ts'])
     df_final.insert(3, 'current_ts', config.df['current_ts'])
-    outpath = os.path.join(outdir, time_datetime + '-flowstats.csv')
+    outpath = os.path.join(outdir, time_datetime + '-flowstats-kmeans.csv')
     df_final.to_csv(outpath, index=False)
+
+    df_centroids = config.pd.DataFrame(centroids)
+    df_centroids.to_csv("flowstats_final_centroids.csv", index=False)
 
     df_final_simple = config.pd.DataFrame(flowstats_final_simple,
                                           columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src',
@@ -205,7 +136,7 @@ def kmeans():
                                                    'cluster_cord_x', 'cluster_cord_y'])
     df_final_simple.insert(2, 'initial_ts', config.df['initial_ts'])
     df_final_simple.insert(3, 'current_ts', config.df['current_ts'])
-    outpath = os.path.join(outdir, time_datetime + '-flowstats-simple.csv')
+    outpath = os.path.join(outdir, time_datetime + '-flowstats-simple-kmeans.csv')
     df_final_simple.to_csv(outpath, index=False)
 
     # Plot

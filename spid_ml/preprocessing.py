@@ -1,10 +1,10 @@
 #!/usr/bin/python3
+import config
 import re
 import sys
 import requests
-
-import config
-
+from sklearn import preprocessing
+from sklearn.preprocessing import MinMaxScaler
 from pandas import np
 
 
@@ -63,9 +63,6 @@ def preprocess(response):
     print("DF")
     print(config.df)
 
-    # if config.df.shape[0] >= 3:
-    #     k_means()
-
     return [response, True]
 
 
@@ -101,3 +98,82 @@ def request_pb(ip_src, ip_dst):
         sys.exit(1)
 
     return [num_packets, num_bytes]
+
+
+def normalization():
+    config.flowstats = config.df.copy()
+
+    del config.flowstats['initial_ts']
+    del config.flowstats['current_ts']
+
+    config.flowstats_simple = config.flowstats.copy()
+    config.flowstats_simple = config.flowstats_simple.drop(['cm', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
+                                                            'bm_ip_src_port_dst', 'bm_ip_dst_port_src',
+                                                            'bm_ip_dst_port_dst', 'ams', 'mv'], axis=1)
+
+    # Data Normalization: Non-Numerical Values
+
+    config.flowstats_norm = config.flowstats.copy()
+
+    ip_encoder = preprocessing.LabelEncoder()
+
+    label_encoding = config.flowstats_norm['ip_src'].append(config.flowstats_norm['ip_dst'])
+
+    ip_encoder.fit(label_encoding)
+    src_ip = ip_encoder.transform(config.flowstats_norm['ip_src'])
+    dst_ip = ip_encoder.transform(config.flowstats_norm['ip_dst'])
+
+    config.flowstats_norm['ip_src'] = src_ip
+    config.flowstats_norm['ip_dst'] = dst_ip
+
+    # Data Normalization: Value Scaling
+
+    scaled_packets = MinMaxScaler().fit_transform(config.flowstats_norm['packets'].values.reshape(-1, 1))
+    scaled_bytes = MinMaxScaler().fit_transform(config.flowstats_norm['bytes'].values.reshape(-1, 1))
+    scaled_src_ip = MinMaxScaler().fit_transform(config.flowstats_norm['ip_src'].values.reshape(-1, 1))
+    scaled_dst_ip = MinMaxScaler().fit_transform(config.flowstats_norm['ip_dst'].values.reshape(-1, 1))
+    scaled_ip_proto = MinMaxScaler().fit_transform(config.flowstats_norm['ip_proto'].values.reshape(-1, 1))
+    scaled_src_port = MinMaxScaler().fit_transform(config.flowstats_norm['port_src'].values.reshape(-1, 1))
+    scaled_dst_port = MinMaxScaler().fit_transform(config.flowstats_norm['port_dst'].values.reshape(-1, 1))
+    scaled_tcp_flags = MinMaxScaler().fit_transform(config.flowstats_norm['tcp_flags'].values.reshape(-1, 1))
+    scaled_icmp_type = MinMaxScaler().fit_transform(config.flowstats_norm['icmp_type'].values.reshape(-1, 1))
+    scaled_icmp_code = MinMaxScaler().fit_transform(config.flowstats_norm['icmp_code'].values.reshape(-1, 1))
+    scaled_cm = MinMaxScaler().fit_transform(config.flowstats_norm['cm'].values.reshape(-1, 1))
+    scaled_bm_ip_src = MinMaxScaler().fit_transform(config.flowstats_norm['bm_ip_src'].values.reshape(-1, 1))
+    scaled_bm_ip_dst = MinMaxScaler().fit_transform(config.flowstats_norm['bm_ip_dst'].values.reshape(-1, 1))
+    scaled_bm_ip_src_port_src = MinMaxScaler().fit_transform(
+        config.flowstats_norm['bm_ip_src_port_src'].values.reshape(-1, 1))
+    scaled_bm_ip_src_port_dst = MinMaxScaler().fit_transform(
+        config.flowstats_norm['bm_ip_src_port_dst'].values.reshape(-1, 1))
+    scaled_bm_ip_dst_port_src = MinMaxScaler().fit_transform(
+        config.flowstats_norm['bm_ip_dst_port_src'].values.reshape(-1, 1))
+    scaled_bm_ip_dst_port_dst = MinMaxScaler().fit_transform(
+        config.flowstats_norm['bm_ip_dst_port_dst'].values.reshape(-1, 1))
+    scaled_ams = MinMaxScaler().fit_transform(config.flowstats_norm['ams'].values.reshape(-1, 1))
+    scaled_mv = MinMaxScaler().fit_transform(config.flowstats_norm['mv'].values.reshape(-1, 1))
+
+    config.flowstats_norm['packets'] = scaled_packets
+    config.flowstats_norm['bytes'] = scaled_bytes
+    config.flowstats_norm['ip_src'] = scaled_src_ip
+    config.flowstats_norm['ip_dst'] = scaled_dst_ip
+    config.flowstats_norm['ip_proto'] = scaled_ip_proto
+    config.flowstats_norm['port_src'] = scaled_src_port
+    config.flowstats_norm['port_dst'] = scaled_dst_port
+    config.flowstats_norm['tcp_flags'] = scaled_tcp_flags
+    config.flowstats_norm['icmp_type'] = scaled_icmp_type
+    config.flowstats_norm['icmp_code'] = scaled_icmp_code
+    config.flowstats_norm['cm'] = scaled_cm
+    config.flowstats_norm['bm_ip_src'] = scaled_bm_ip_src
+    config.flowstats_norm['bm_ip_dst'] = scaled_bm_ip_dst
+    config.flowstats_norm['bm_ip_src_port_src'] = scaled_bm_ip_src_port_src
+    config.flowstats_norm['bm_ip_src_port_dst'] = scaled_bm_ip_src_port_dst
+    config.flowstats_norm['bm_ip_dst_port_src'] = scaled_bm_ip_dst_port_src
+    config.flowstats_norm['bm_ip_dst_port_dst'] = scaled_bm_ip_dst_port_dst
+    config.flowstats_norm['ams'] = scaled_ams
+    config.flowstats_norm['mv'] = scaled_mv
+
+    config.flowstats_norm_simple = config.flowstats_norm.copy()
+    config.flowstats_norm_simple = config.flowstats_norm_simple.drop(
+        ['cm', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
+         'bm_ip_src_port_dst', 'bm_ip_dst_port_src',
+         'bm_ip_dst_port_dst', 'ams', 'mv'], axis=1)

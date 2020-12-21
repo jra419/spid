@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 import config
 import preprocessing
-import kmeans
+from algs import kmeans
+from algs import dbscan
 import pandas as pd
 from flask import Flask, request, json
 
@@ -23,7 +24,12 @@ def spid_rest():
 def ml_pipeline(response):
     output_preprocessing = preprocessing.preprocess(response)
     if output_preprocessing[1]:
-        kmeans.kmeans()
+        # Data normalization into a [0,1] scale.
+        preprocessing.normalization()
+        if config.args.kmeans:
+            kmeans.kmeans()
+        if config.args.dbscan:
+            dbscan.dbscan()
     return output_preprocessing[0]
 
 
