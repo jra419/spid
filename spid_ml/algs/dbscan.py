@@ -65,12 +65,8 @@ def dbscan():
         os.mkdir(outdir)
 
     df_final = config.pd.DataFrame(flowstats_final,
-                                   columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src', 'port_dst',
-                                            'tcp_flags', 'icmp_type', 'icmp_code', 'cm', 'bm_ip_src', 'bm_ip_dst',
-                                            'bm_ip_src_port_src', 'bm_ip_src_port_dst', 'bm_ip_dst_port_src',
-                                            'bm_ip_dst_port_dst', 'ams', 'mv', 'cluster', 'cluster_cord_x',
-                                            'cluster_cord_y'])
-    df_final.insert(2, 'initial_ts', config.df['initial_ts'])
-    df_final.insert(3, 'current_ts', config.df['current_ts'])
+                                   columns=['ip', 'cm', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
+                                            'bm_ip_src_port_dst', 'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'cluster',
+                                            'cluster_cord_x', 'cluster_cord_y'])
     outpath = os.path.join(outdir, time_datetime + '-flowstats-dbscan.csv')
     df_final.to_csv(outpath, index=False)

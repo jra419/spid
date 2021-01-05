@@ -67,43 +67,26 @@ def silhouette(flowstats):
 
 def kmeans():
     # Elbow Method calculation
-
     n_clusters_all = elbow_method(config.flowstats_norm)
-    n_clusters_simple = elbow_method(config.flowstats_norm_simple)
 
     # print('\nBest n_clusters for FLOWSTATS_NORMALIZED_ALL:  ', n_clusters_all)
-    # print('Best n_clusters for FLOWSTATS_NORMALIZED_SIMPLE: ', n_clusters_simple)
 
     y = np.array(config.flowstats)
-    y_simple = np.array(config.flowstats_simple)
 
     x_pca = PCA(n_components=2, whiten=True).fit_transform(config.flowstats_norm)
-    x_simple_pca = PCA(n_components=2, whiten=True).fit_transform(config.flowstats_norm_simple)
 
     x_pca_x = np.array(x_pca[:, 0])
     x_pca_y = np.array(x_pca[:, 1])
 
-    x_simple_pca_x = np.array(x_simple_pca[:, 0])
-    x_simple_pca_y = np.array(x_simple_pca[:, 1])
-
     # Fitting the input data
 
     km = KMeans(n_clusters=n_clusters_all, init='k-means++', max_iter=1000, n_init=20).fit(config.flowstats_norm)
-    km_simple = KMeans(n_clusters=n_clusters_simple, init='k-means++', max_iter=1000, n_init=20).fit(
-        config.flowstats_norm_simple)
-
     labels = km.predict(config.flowstats_norm)
-    labels_simple = km_simple.predict(config.flowstats_norm_simple)
-
     centroids = km.cluster_centers_
 
     flowstats_final = np.insert(y, y.shape[1], labels, axis=1)
     flowstats_final = np.insert(flowstats_final, flowstats_final.shape[1], x_pca_x, axis=1)
     flowstats_final = np.insert(flowstats_final, flowstats_final.shape[1], x_pca_y, axis=1)
-
-    flowstats_final_simple = np.insert(y_simple, y_simple.shape[1], labels_simple, axis=1)
-    flowstats_final_simple = np.insert(flowstats_final_simple, flowstats_final_simple.shape[1], x_simple_pca_x, axis=1)
-    flowstats_final_simple = np.insert(flowstats_final_simple, flowstats_final_simple.shape[1], x_simple_pca_y, axis=1)
 
     # Final Cluster Dataframes
 
@@ -117,27 +100,14 @@ def kmeans():
         os.mkdir(outdir)
 
     df_final = config.pd.DataFrame(flowstats_final,
-                                   columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src', 'port_dst',
-                                            'tcp_flags', 'icmp_type', 'icmp_code', 'cm', 'bm_ip_src', 'bm_ip_dst',
-                                            'bm_ip_src_port_src', 'bm_ip_src_port_dst', 'bm_ip_dst_port_src',
-                                            'bm_ip_dst_port_dst', 'ams', 'mv', 'cluster', 'cluster_cord_x',
-                                            'cluster_cord_y'])
-    df_final.insert(2, 'initial_ts', config.df['initial_ts'])
-    df_final.insert(3, 'current_ts', config.df['current_ts'])
+                                   columns=['ip', 'cm', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
+                                            'bm_ip_src_port_dst', 'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'cluster',
+                                            'cluster_cord_x', 'cluster_cord_y'])
     outpath = os.path.join(outdir, time_datetime + '-flowstats-kmeans.csv')
     df_final.to_csv(outpath, index=False)
 
     df_centroids = config.pd.DataFrame(centroids)
     df_centroids.to_csv("flowstats_final_centroids.csv", index=False)
-
-    df_final_simple = config.pd.DataFrame(flowstats_final_simple,
-                                          columns=['packets', 'bytes', 'ip_src', 'ip_dst', 'ip_proto', 'port_src',
-                                                   'port_dst', 'tcp_flags', 'icmp_type', 'icmp_code', 'cluster',
-                                                   'cluster_cord_x', 'cluster_cord_y'])
-    df_final_simple.insert(2, 'initial_ts', config.df['initial_ts'])
-    df_final_simple.insert(3, 'current_ts', config.df['current_ts'])
-    outpath = os.path.join(outdir, time_datetime + '-flowstats-simple-kmeans.csv')
-    df_final_simple.to_csv(outpath, index=False)
 
     # Plot
 
@@ -151,14 +121,5 @@ def kmeans():
                             label=i)
         ax1.axis('auto')
         ax1.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-        plt.figure(2)
-        ax2 = plt.subplot(title="K-means: Packets/Bytes")
-        cmap = plt.cm.get_cmap('tab20')
-        for i, cluster in df_final_simple.groupby('cluster'):
-            _ = ax2.scatter(cluster['cluster_cord_x'], cluster['cluster_cord_y'],
-                            c=[cmap(i / n_clusters_simple)], label=i)
-        ax2.axis('auto')
-        ax2.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
         plt.show()

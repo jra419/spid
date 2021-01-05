@@ -3,7 +3,8 @@ import pandas as pd
 import argparse
 
 
-df = pd.DataFrame()
+df = pd.DataFrame(columns=['ip', 'cm', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src', 'bm_ip_src_port_dst',
+                           'bm_ip_dst_port_src', 'bm_ip_dst_port_dst'])
 norm = pd.DataFrame()
 flowstats = pd.DataFrame()
 flowstats_simple = pd.DataFrame()

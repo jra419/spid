@@ -14,7 +14,6 @@ def spid_rest():
     if request.method == 'POST':
         decoded_data = request.data.decode('utf-8')
         params = json.loads(decoded_data)
-
         config.norm = pd.json_normalize(params)
 
         return "0"
@@ -26,6 +25,7 @@ def ml_pipeline(response):
     if output_preprocessing[1]:
         # Data normalization into a [0,1] scale.
         preprocessing.normalization()
+    if config.df.shape[0] >= 3:
         if config.args.kmeans:
             kmeans.kmeans()
         if config.args.dbscan:
@@ -33,6 +33,5 @@ def ml_pipeline(response):
     return output_preprocessing[0]
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     app.run(debug=False)
