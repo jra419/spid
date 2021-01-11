@@ -82,7 +82,6 @@ def kmeans():
 
     km = KMeans(n_clusters=n_clusters_all, init='k-means++', max_iter=1000, n_init=20).fit(config.flowstats_norm)
     labels = km.predict(config.flowstats_norm)
-    centroids = km.cluster_centers_
 
     flowstats_final = np.insert(y, y.shape[1], labels, axis=1)
     flowstats_final = np.insert(flowstats_final, flowstats_final.shape[1], x_pca_x, axis=1)
@@ -106,8 +105,7 @@ def kmeans():
     outpath = os.path.join(outdir, time_datetime + '-flowstats-kmeans.csv')
     df_final.to_csv(outpath, index=False)
 
-    df_centroids = config.pd.DataFrame(centroids)
-    df_centroids.to_csv("flowstats_final_centroids.csv", index=False)
+    config.df_kmeans_isolated = df_final.drop_duplicates(subset=['cluster'], keep=False)
 
     # Plot
 

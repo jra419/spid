@@ -8,15 +8,13 @@ from sklearn.preprocessing import MinMaxScaler
 from pandas import np
 
 
-def preprocess(response):
+def preprocess():
     config.norm.fillna(value=0, inplace=True)
 
     norm1 = config.norm.reset_index(drop=True)
 
     # Temporary np arrays for comparison with the dataframe, norm_src_ip and norm_dst_ip.
     # Used to check if the respective src/dst ip addresses already exist.
-
-    print(norm1)
 
     norm_src_ip = np.array(norm1)
     norm_dst_ip = np.array(norm1)
@@ -61,7 +59,10 @@ def preprocess(response):
                                       'bm_ip_dst_port_src': config.norm['bm_ip_dst_port_src'].values[0],
                                       'bm_ip_dst_port_dst': config.norm['bm_ip_dst_port_dst'].values[0]},
                                      ignore_index=True)
-        return response
+
+        config.df_final_combined = config.df_columns.copy()
+
+        return True
 
     if norm_src_ip[0] in config.df['ip'].values:
         m = config.df[config.df['ip'] == norm_src_ip[0][0]].index.tolist()
@@ -97,12 +98,9 @@ def preprocess(response):
                                       'bm_ip_dst_port_dst': config.norm['bm_ip_dst_port_dst'].values[0]},
                                      ignore_index=True)
 
-    # print("NORM")
-    # print(config.norm)
-    # print("DF")
-    # print(config.df)
+    config.df_final_combined = config.df.copy()
 
-    return [response, True]
+    return True
 
 
 def request_pb(ip_src, ip_dst):

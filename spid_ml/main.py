@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import config
 import preprocessing
+import postprocessing
 from algs import kmeans
 from algs import dbscan
 import pandas as pd
@@ -21,8 +22,8 @@ def spid_rest():
 
 @app.after_request
 def ml_pipeline(response):
-    output_preprocessing = preprocessing.preprocess(response)
-    if output_preprocessing[1]:
+    output_preprocessing = preprocessing.preprocess()
+    if output_preprocessing:
         # Data normalization into a [0,1] scale.
         preprocessing.normalization()
     if config.df.shape[0] >= 3:
@@ -30,7 +31,8 @@ def ml_pipeline(response):
             kmeans.kmeans()
         if config.args.dbscan:
             dbscan.dbscan()
-    return output_preprocessing[0]
+        postprocessing.postprocess()
+    return response
 
 
 if __name__ == '__main__':

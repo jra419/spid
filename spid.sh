@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cleanup() {
-	sudo pkill -f ml_
+	sudo pkill -f main.py
 	sudo pkill -f simple_switch_grpc
 	sudo pkill -f onos
 	bash veth_teardown.sh
@@ -21,9 +21,11 @@ echo "--------------------"
 echo "ML python REST script"
 echo "--------------------"
 
-python3 ml_kmeans.py &
+cd spid_ml
 
-sleep 10
+python3 main.py --kmeans --dbscan &
+
+sleep 5
 
 echo "--------------------"
 echo "Starting ONOS"
@@ -37,7 +39,7 @@ export ONOS_APPS=drivers.bmv2,proxyarp,lldpprovider,hostprovider,fwd,gui2,p4dma.
 
 bazel run onos-local -- clean &
 
-sleep 60
+sleep 30
 
 tail -f /tmp/onos-2.2.1-SNAPSHOT/onos.log | while read LOGLINE
 do
@@ -93,19 +95,21 @@ cd ~/spid/
 
 ./runtime_cli_config.sh
 
+sleep 5
+
 # echo "--------------------" 
 # echo "Running tcpreplay: Training set"
 # echo "--------------------"
 
 # sudo tcpreplay -i s1-eth1 -K --limit=10000 --pps=100 $1
 
-# echo "--------------------" 
-# echo "Running tcpreplay: Test set"
-# echo "--------------------"
+echo "--------------------" 
+echo "Running tcpreplay: Test set"
+echo "--------------------"
 
 # cd ~/Documents/
 
-# sudo tcpreplay -i s1-eth2 -K --pps=10 $1
+sudo tcpreplay -i s1-eth2 -K --pps=10 $1
 
 while :; do
     sleep 5

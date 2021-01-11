@@ -70,3 +70,5 @@ def dbscan():
                                             'cluster_cord_x', 'cluster_cord_y'])
     outpath = os.path.join(outdir, time_datetime + '-flowstats-dbscan.csv')
     df_final.to_csv(outpath, index=False)
+
+    config.df_dbscan_isolated = df_final.drop_duplicates(subset=['cluster'], keep=False)
