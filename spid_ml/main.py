@@ -2,8 +2,7 @@
 import config
 import preprocessing
 import postprocessing
-from algs import kmeans
-from algs import dbscan
+from algs import dbscan, kmeans
 import pandas as pd
 from flask import Flask, request, json
 

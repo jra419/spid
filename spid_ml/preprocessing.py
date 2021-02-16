@@ -16,11 +16,9 @@ def preprocess():
     # Temporary np arrays for comparison with the dataframe, norm_src_ip and norm_dst_ip.
     # Used to check if the respective src/dst ip addresses already exist.
 
-    norm_src_ip = np.array(norm1)
-    norm_dst_ip = np.array(norm1)
+    norm_ip = np.array(norm1)
 
-    norm_src_ip = np.delete(norm_src_ip, [1, 2, 3, 4, 5, 6, 7, 8], axis=1)
-    norm_dst_ip = np.delete(norm_dst_ip, [0, 2, 3, 4, 5, 6, 7, 8], axis=1)
+    norm_ip = np.delete(norm_ip, [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], axis=1)
 
     # Obtain from ONOS the number of packets/bytes corresponding to the current flow.
     # list_pb = request_pb(str(norm_src_ip[0, 0]), str(norm_dst_ip[0, 1]))
@@ -33,72 +31,64 @@ def preprocess():
     # config.norm.insert(1, 'packets', list_pb[0])
 
     # If the dataframe is empty, simply append the flow statistics and exit.
-    # if config.df.shape[0] == 0:
-    #     config.df = config.df.append(config.norm, ignore_index=True)
-    #     return [response, False]
+    if config.df.shape[0] == 0:
+        config.df = config.df.append(config.norm, ignore_index=True)
+        config.df_final_combined = config.df_columns.copy()
+        return False
 
     # Check if the new current packet already exists in the dataframe.
     # If so, update the existing flow sketch values, aggregated both by src and dst ip.
     # Else, simply append the current flow statistics (the packet doesn't exist in the dataframe).
+    if (config.df[config.df.columns[0:2]] == norm_ip).all(1).any():
 
-    if config.df.shape[0] == 0:
-        config.df = config.df.append({'ip': config.norm['ip_src'].values[0],
-                                      'cm': config.norm['cm'].values[0],
-                                      'bm_ip_src': config.norm['bm_ip_src'].values[0],
-                                      'bm_ip_dst': 0,
-                                      'bm_ip_src_port_src': config.norm['bm_ip_src_port_src'].values[0],
-                                      'bm_ip_src_port_dst': config.norm['bm_ip_src_port_dst'].values[0],
-                                      'bm_ip_dst_port_src': 0,
-                                      'bm_ip_dst_port_dst': 0}, ignore_index=True)
-        config.df = config.df.append({'ip': config.norm['ip_dst'].values[0],
-                                      'cm': config.norm['cm'].values[0],
-                                      'bm_ip_src': '0',
-                                      'bm_ip_dst': config.norm['bm_ip_dst'].values[0],
-                                      'bm_ip_src_port_src': '0',
-                                      'bm_ip_src_port_dst': '0',
-                                      'bm_ip_dst_port_src': config.norm['bm_ip_dst_port_src'].values[0],
-                                      'bm_ip_dst_port_dst': config.norm['bm_ip_dst_port_dst'].values[0]},
-                                     ignore_index=True)
+        m = (config.df['ip_src'].values == config.norm['ip_src'].values) \
+            & (config.df['ip_dst'].values == config.norm['ip_dst'].values)
 
-        config.df_final_combined = config.df_columns.copy()
+        # config.df.loc[m, ['cm_ip_src_ip_dst']] = cm_ip_src_ip_dst
+        # config.df.loc[m, ['cm_ip_dst_port_21']] = cm_ip_dst_port_21
+        # config.df.loc[m, ['cm_ip_dst_port_22']] = cm_ip_dst_port_22
+        # config.df.loc[m, ['cm_ip_dst_port_80']] = cm_ip_dst_port_80
+        # config.df.loc[m, ['cm_ip_dst_tcp_syn']] = cm_ip_dst_tcp_syn
+        # config.df.loc[m, ['cm_ip_dst_icmp']] = cm_ip_dst_icmp
+        # config.df.loc[m, ['bm_ip_src']] = bm_ip_src
+        # config.df.loc[m, ['bm_ip_dst']] = bm_ip_dst
+        # config.df.loc[m, ['bm_ip_src_port_dst']] = bm_ip_src_port_src
+        # config.df.loc[m, ['bm_ip_src_port_dst']] = bm_ip_src_port_dst
+        # config.df.loc[m, ['bm_ip_dst_port_src']] = bm_ip_dst_port_src
+        # config.df.loc[m, ['bm_ip_dst_port_dst']] = bm_ip_dst_port_dst
 
-        return True
-
-    if norm_src_ip[0] in config.df['ip'].values:
-        m = config.df[config.df['ip'] == norm_src_ip[0][0]].index.tolist()
-        config.df.loc[m, ['cm']] = config.norm['cm'].values[0]
+        config.df.loc[m, ['cm_ip_src_ip_dst']] = config.norm['cm_ip_src_ip_dst'].values[0]
         config.df.loc[m, ['bm_ip_src']] = config.norm['bm_ip_src'].values[0]
+        config.df.loc[m, ['bm_ip_dst']] = config.norm['bm_ip_dst'].values[0]
         config.df.loc[m, ['bm_ip_src_port_src']] = config.norm['bm_ip_src_port_src'].values[0]
         config.df.loc[m, ['bm_ip_src_port_dst']] = config.norm['bm_ip_src_port_dst'].values[0]
-    else:
-        config.df = config.df.append({'ip': config.norm['ip_src'].values[0],
-                                      'cm': config.norm['cm'].values[0],
-                                      'bm_ip_src': config.norm['bm_ip_src'].values[0],
-                                      'bm_ip_dst': 0,
-                                      'bm_ip_src_port_src': config.norm['bm_ip_src_port_src'].values[0],
-                                      'bm_ip_src_port_dst': config.norm['bm_ip_src_port_dst'].values[0],
-                                      'bm_ip_dst_port_src': 0,
-                                      'bm_ip_dst_port_dst': 0},
-                                     ignore_index=True)
-
-    if norm_dst_ip[0] in config.df['ip'].values:
-        m = config.df[config.df['ip'] == norm_dst_ip[0][0]].index.tolist()
-        config.df.loc[m, ['cm']] = config.norm['cm'].values[0]
-        config.df.loc[m, ['bm_ip_dst']] = config.norm['bm_ip_dst'].values[0]
         config.df.loc[m, ['bm_ip_dst_port_src']] = config.norm['bm_ip_dst_port_src'].values[0]
         config.df.loc[m, ['bm_ip_dst_port_dst']] = config.norm['bm_ip_dst_port_dst'].values[0]
+
+        # We only update the following values if they are != 0.
+        # The data plane will only send values != 0 if the tcp flag is syn or the protocol is icmp, respectively.
+
+        if config.norm['cm_ip_dst_tcp_syn'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_dst_tcp_syn']] = config.norm['cm_ip_dst_tcp_syn'].values[0]
+
+        if config.norm['cm_ip_dst_icmp'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_dst_icmp']] = config.norm['cm_ip_dst_icmp'].values[0]
+
+        # Due to way the stats are sent from the data plane, only one of the ports, if any, can be != 0.
+        # If a port != 0, we update its value in the dataframe.
+        if config.norm['cm_ip_dst_port_21'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_dst_port_21']] = config.norm['cm_ip_dst_port_21'].values[0]
+        elif config.norm['cm_ip_dst_port_22'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_dst_port_22']] = config.norm['cm_ip_dst_port_22'].values[0]
+        elif config.norm['cm_ip_dst_port_80'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_dst_port_80']] = config.norm['cm_ip_dst_port_80'].values[0]
+
     else:
-        config.df = config.df.append({'ip': config.norm['ip_dst'].values[0],
-                                      'cm': config.norm['cm'].values[0],
-                                      'bm_ip_src': '0',
-                                      'bm_ip_dst': config.norm['bm_ip_dst'].values[0],
-                                      'bm_ip_src_port_src': '0',
-                                      'bm_ip_src_port_dst': '0',
-                                      'bm_ip_dst_port_src': config.norm['bm_ip_dst_port_src'].values[0],
-                                      'bm_ip_dst_port_dst': config.norm['bm_ip_dst_port_dst'].values[0]},
-                                     ignore_index=True)
+        config.df = config.df.append(config.norm, ignore_index=True)
 
     config.df_final_combined = config.df.copy()
+
+    print(config.norm)
 
     return True
 
@@ -141,24 +131,36 @@ def request_pb(ip_src, ip_dst):
 def normalization():
     config.flowstats = config.df.copy()
 
-    # del config.flowstats['initial_ts']
-    # del config.flowstats['current_ts']
-
     # Data Normalization: Non-Numerical Values
 
     config.flowstats_norm = config.flowstats.copy()
 
     ip_encoder = preprocessing.LabelEncoder()
 
-    ip_encoder.fit(config.flowstats_norm['ip'])
-    ip_addr = ip_encoder.transform(config.flowstats_norm['ip'])
+    label_encoding = config.flowstats_norm['ip_src'].append(config.flowstats_norm['ip_dst'])
 
-    config.flowstats_norm['ip'] = ip_addr
+    ip_encoder.fit(label_encoding)
+    src_ip = ip_encoder.transform(config.flowstats_norm['ip_src'])
+    dst_ip = ip_encoder.transform(config.flowstats_norm['ip_dst'])
+
+    config.flowstats_norm['ip_src'] = src_ip
+    config.flowstats_norm['ip_dst'] = dst_ip
 
     # Data Normalization: Value Scaling
 
-    scaled_ip = MinMaxScaler().fit_transform(config.flowstats_norm['ip'].values.reshape(-1, 1))
-    scaled_cm = MinMaxScaler().fit_transform(config.flowstats_norm['cm'].values.reshape(-1, 1))
+    scaled_src_ip = MinMaxScaler().fit_transform(config.flowstats_norm['ip_src'].values.reshape(-1, 1))
+    scaled_dst_ip = MinMaxScaler().fit_transform(config.flowstats_norm['ip_dst'].values.reshape(-1, 1))
+    scaled_cm_ip_src_ip_dst = MinMaxScaler().fit_transform(
+        config.flowstats_norm['cm_ip_src_ip_dst'].values.reshape(-1, 1))
+    scaled_cm_ip_dst_port_21 = MinMaxScaler().fit_transform(
+        config.flowstats_norm['cm_ip_dst_port_21'].values.reshape(-1, 1))
+    scaled_cm_ip_dst_port_22 = MinMaxScaler().fit_transform(
+        config.flowstats_norm['cm_ip_dst_port_22'].values.reshape(-1, 1))
+    scaled_cm_ip_dst_port_80 = MinMaxScaler().fit_transform(
+        config.flowstats_norm['cm_ip_dst_port_80'].values.reshape(-1, 1))
+    scaled_cm_ip_dst_tcp_syn = MinMaxScaler().fit_transform(
+        config.flowstats_norm['cm_ip_dst_tcp_syn'].values.reshape(-1, 1))
+    scaled_cm_ip_dst_icmp = MinMaxScaler().fit_transform(config.flowstats_norm['cm_ip_dst_icmp'].values.reshape(-1, 1))
     scaled_bm_ip_src = MinMaxScaler().fit_transform(config.flowstats_norm['bm_ip_src'].values.reshape(-1, 1))
     scaled_bm_ip_dst = MinMaxScaler().fit_transform(config.flowstats_norm['bm_ip_dst'].values.reshape(-1, 1))
     scaled_bm_ip_src_port_src = MinMaxScaler().fit_transform(
@@ -170,11 +172,20 @@ def normalization():
     scaled_bm_ip_dst_port_dst = MinMaxScaler().fit_transform(
         config.flowstats_norm['bm_ip_dst_port_dst'].values.reshape(-1, 1))
 
-    config.flowstats_norm['ip'] = scaled_ip
-    config.flowstats_norm['cm'] = scaled_cm
+    config.flowstats_norm['ip_src'] = scaled_src_ip
+    config.flowstats_norm['ip_dst'] = scaled_dst_ip
+    config.flowstats_norm['cm_ip_src_ip_dst'] = scaled_cm_ip_src_ip_dst
+    config.flowstats_norm['cm_ip_dst_port_21'] = scaled_cm_ip_dst_port_21
+    config.flowstats_norm['cm_ip_dst_port_22'] = scaled_cm_ip_dst_port_22
+    config.flowstats_norm['cm_ip_dst_port_80'] = scaled_cm_ip_dst_port_80
+    config.flowstats_norm['cm_ip_dst_tcp_syn'] = scaled_cm_ip_dst_tcp_syn
+    config.flowstats_norm['cm_ip_dst_icmp'] = scaled_cm_ip_dst_icmp
     config.flowstats_norm['bm_ip_src'] = scaled_bm_ip_src
     config.flowstats_norm['bm_ip_dst'] = scaled_bm_ip_dst
     config.flowstats_norm['bm_ip_src_port_src'] = scaled_bm_ip_src_port_src
     config.flowstats_norm['bm_ip_src_port_dst'] = scaled_bm_ip_src_port_dst
     config.flowstats_norm['bm_ip_dst_port_src'] = scaled_bm_ip_dst_port_src
     config.flowstats_norm['bm_ip_dst_port_dst'] = scaled_bm_ip_dst_port_dst
+
+    print('FLOWSTATS NORM PREPROCESSING')
+    print(config.flowstats_norm)

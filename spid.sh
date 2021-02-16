@@ -21,7 +21,7 @@ echo "--------------------"
 echo "ML python REST script"
 echo "--------------------"
 
-cd spid_ml
+cd spid_ml || exit
 
 python3 main.py --kmeans --dbscan &
 
@@ -31,7 +31,7 @@ echo "--------------------"
 echo "Starting ONOS"
 echo "--------------------"
 
-cd ~/onos/
+cd ~/onos/ || exit
 
 sleep 5
 
@@ -41,7 +41,7 @@ bazel run onos-local -- clean &
 
 sleep 30
 
-tail -f /tmp/onos-2.2.1-SNAPSHOT/onos.log | while read LOGLINE
+tail -f /tmp/onos-2.2.1-SNAPSHOT/onos.log | while read -r LOGLINE
 do
    [[ "${LOGLINE}" == *"Application org.onosproject.drivers.ciena.c5170 has been installed"* ]] && pkill -P $$ tail
 done
@@ -71,7 +71,7 @@ netcfg="@$HOME/spid/netcfg.json"
 host2="@$HOME/spid/host2.json"
 sketches="@$HOME/spid/t_sketches_config.json"
 
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $netcfg --user onos:rocks 'http://localhost:8181/onos/v1/network/configuration' 
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d "$netcfg" --user onos:rocks 'http://localhost:8181/onos/v1/network/configuration'
 
 # sleep 10
 
@@ -79,11 +79,11 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 
 sleep 5
 
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $host2 --user onos:rocks 'http://localhost:8181/onos/v1/hosts' 
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d "$host2" --user onos:rocks 'http://localhost:8181/onos/v1/hosts'
 
 sleep 5
 
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $sketches --user onos:rocks 'http://localhost:8181/onos/v1/flows'
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d "$sketches" --user onos:rocks 'http://localhost:8181/onos/v1/flows'
 
 sleep 5
 
@@ -91,7 +91,7 @@ echo "--------------------"
 echo "Configuring P4 hash function polynomials"
 echo "--------------------"
 
-cd ~/spid/
+cd ~/spid/ || exit
 
 ./runtime_cli_config.sh
 
@@ -109,7 +109,7 @@ echo "--------------------"
 
 # cd ~/Documents/
 
-sudo tcpreplay -i s1-eth2 -K --pps=10 $1
+sudo tcpreplay -i s1-eth2 -K --pps=500 "$1"
 
 while :; do
     sleep 5
