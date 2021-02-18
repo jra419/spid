@@ -69,11 +69,7 @@ def silhouette(flowstats):
 
 def kmeans():
     # Elbow Method calculation
-    print('FLOWSTATS NORM')
-    print(config.flowstats_norm)
     n_clusters_all = elbow_method(config.flowstats_norm)
-
-    # print('\nBest n_clusters for FLOWSTATS_NORMALIZED_ALL:  ', n_clusters_all)
 
     y = np.array(config.flowstats)
 
@@ -84,7 +80,7 @@ def kmeans():
 
     # Fitting the input data
 
-    km = KMeans(n_clusters=n_clusters_all, init='k-means++', max_iter=1000, n_init=20)\
+    km = KMeans(n_clusters=n_clusters_all, init='k-means++', max_iter=1000, n_init=20) \
         .fit(config.flowstats_norm)
     labels = km.predict(config.flowstats_norm)
 
@@ -104,11 +100,11 @@ def kmeans():
         os.mkdir(outdir)
 
     df_final = config.pd.DataFrame(flowstats_final,
-                                           columns=['ip_src', 'ip_dst', 'cm_ip_src_ip_dst', 'cm_ip_dst_port_21',
-                                                    'cm_ip_dst_port_22', 'cm_ip_dst_port_80', 'cm_ip_dst_tcp_syn',
-                                                    'cm_ip_dst_icmp', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
-                                                    'bm_ip_src_port_dst', 'bm_ip_dst_port_src', 'bm_ip_dst_port_dst',
-                                                    'cluster', 'cluster_cord_x', 'cluster_cord_y'])
+                                   columns=['ip_src', 'ip_dst', 'cm_ip_src_ip_dst', 'cm_ip_dst_port_21',
+                                            'cm_ip_dst_port_22', 'cm_ip_dst_port_80', 'cm_ip_dst_tcp_syn',
+                                            'cm_ip_dst_icmp', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
+                                            'bm_ip_src_port_dst', 'bm_ip_dst_port_src', 'bm_ip_dst_port_dst',
+                                            'cluster', 'cluster_cord_x', 'cluster_cord_y'])
     outpath = os.path.join(outdir, time_datetime + '-flowstats-kmeans.csv')
     df_final.to_csv(outpath, index=False)
 

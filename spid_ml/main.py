@@ -9,6 +9,7 @@ from flask import Flask, request, json
 app = Flask(__name__)
 
 
+# Receives flow statistics sent by ONOS via REST.
 @app.route('/add/', methods=['POST'])
 def spid_rest():
     if request.method == 'POST':
@@ -19,6 +20,10 @@ def spid_rest():
         return "0"
 
 
+# Main ML pipeline.
+# The received flow statistics are preprocessed and added to the main dataframe, which is then normalized.
+# If the dataframe has at least 3 rows, then the ML algorithms defined by the operator are executed.
+# A final postprocessing step generates csv files containing the obtained results.
 @app.after_request
 def ml_pipeline(response):
     output_preprocessing = preprocessing.preprocess()

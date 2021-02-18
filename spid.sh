@@ -67,19 +67,14 @@ echo "Pushing netconf and host info to ONOS"
 echo "--------------------"
 
 netcfg="@$HOME/spid/netcfg.json"
-# host1="@$HOME/spid/host1.json"
-host2="@$HOME/spid/host2.json"
+host="@$HOME/spid/host.json"
 sketches="@$HOME/spid/t_sketches_config.json"
 
 curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d "$netcfg" --user onos:rocks 'http://localhost:8181/onos/v1/network/configuration'
 
-# sleep 10
-
-# curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d $host1 --user onos:rocks 'http://localhost:8181/onos/v1/hosts' 
-
 sleep 5
 
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d "$host2" --user onos:rocks 'http://localhost:8181/onos/v1/hosts'
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d "$host" --user onos:rocks 'http://localhost:8181/onos/v1/hosts'
 
 sleep 5
 
@@ -97,17 +92,9 @@ cd ~/spid/ || exit
 
 sleep 5
 
-# echo "--------------------" 
-# echo "Running tcpreplay: Training set"
-# echo "--------------------"
-
-# sudo tcpreplay -i s1-eth1 -K --limit=10000 --pps=100 $1
-
 echo "--------------------" 
-echo "Running tcpreplay: Test set"
+echo "Running tcpreplay"
 echo "--------------------"
-
-# cd ~/Documents/
 
 sudo tcpreplay -i s1-eth2 -K --pps=500 "$1"
 

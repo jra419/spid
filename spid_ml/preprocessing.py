@@ -5,7 +5,7 @@ import sys
 import requests
 from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
-from pandas import np
+import numpy as np
 
 
 def preprocess():
@@ -44,19 +44,6 @@ def preprocess():
         m = (config.df['ip_src'].values == config.norm['ip_src'].values) \
             & (config.df['ip_dst'].values == config.norm['ip_dst'].values)
 
-        # config.df.loc[m, ['cm_ip_src_ip_dst']] = cm_ip_src_ip_dst
-        # config.df.loc[m, ['cm_ip_dst_port_21']] = cm_ip_dst_port_21
-        # config.df.loc[m, ['cm_ip_dst_port_22']] = cm_ip_dst_port_22
-        # config.df.loc[m, ['cm_ip_dst_port_80']] = cm_ip_dst_port_80
-        # config.df.loc[m, ['cm_ip_dst_tcp_syn']] = cm_ip_dst_tcp_syn
-        # config.df.loc[m, ['cm_ip_dst_icmp']] = cm_ip_dst_icmp
-        # config.df.loc[m, ['bm_ip_src']] = bm_ip_src
-        # config.df.loc[m, ['bm_ip_dst']] = bm_ip_dst
-        # config.df.loc[m, ['bm_ip_src_port_dst']] = bm_ip_src_port_src
-        # config.df.loc[m, ['bm_ip_src_port_dst']] = bm_ip_src_port_dst
-        # config.df.loc[m, ['bm_ip_dst_port_src']] = bm_ip_dst_port_src
-        # config.df.loc[m, ['bm_ip_dst_port_dst']] = bm_ip_dst_port_dst
-
         config.df.loc[m, ['cm_ip_src_ip_dst']] = config.norm['cm_ip_src_ip_dst'].values[0]
         config.df.loc[m, ['bm_ip_src']] = config.norm['bm_ip_src'].values[0]
         config.df.loc[m, ['bm_ip_dst']] = config.norm['bm_ip_dst'].values[0]
@@ -76,6 +63,7 @@ def preprocess():
 
         # Due to way the stats are sent from the data plane, only one of the ports, if any, can be != 0.
         # If a port != 0, we update its value in the dataframe.
+
         if config.norm['cm_ip_dst_port_21'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_port_21']] = config.norm['cm_ip_dst_port_21'].values[0]
         elif config.norm['cm_ip_dst_port_22'].values[0] != 0:
@@ -88,17 +76,15 @@ def preprocess():
 
     config.df_final_combined = config.df.copy()
 
-    print(config.norm)
-
     return True
 
 
+# Function to obtain the number of packets/bytes for the current flow from the ONOS flow table.
 def request_pb(ip_src, ip_dst):
     headers = {
         'Accept': 'application/json',
     }
 
-    # Obtain the number of packets/bytes from the ONOS flow table.
     response = requests.get('http://localhost:8181/onos/v1/flows', headers=headers, auth=('onos', 'rocks'))
 
     regex_flow = \
@@ -186,6 +172,3 @@ def normalization():
     config.flowstats_norm['bm_ip_src_port_dst'] = scaled_bm_ip_src_port_dst
     config.flowstats_norm['bm_ip_dst_port_src'] = scaled_bm_ip_dst_port_src
     config.flowstats_norm['bm_ip_dst_port_dst'] = scaled_bm_ip_dst_port_dst
-
-    print('FLOWSTATS NORM PREPROCESSING')
-    print(config.flowstats_norm)
