@@ -69,10 +69,12 @@ def dbscan():
     df_final = config.pd.DataFrame(flowstats_final,
                                    columns=['ip_src', 'ip_dst', 'cm_ip_src_ip_dst', 'cm_ip_dst_port_21',
                                             'cm_ip_dst_port_22', 'cm_ip_dst_port_80', 'cm_ip_dst_tcp_syn',
-                                            'cm_ip_dst_icmp', 'bm_ip_src', 'bm_ip_dst', 'bm_ip_src_port_src',
-                                            'bm_ip_src_port_dst', 'bm_ip_dst_port_src', 'bm_ip_dst_port_dst',
-                                            'cluster', 'cluster_cord_x', 'cluster_cord_y'])
+                                            'cm_ip_dst_tcp_ack', 'cm_ip_dst_tcp_rst', 'cm_ip_dst_icmp', 'bm_ip_src',
+                                            'bm_ip_dst', 'bm_ip_src_port_src', 'bm_ip_src_port_dst',
+                                            'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'cluster', 'cluster_cord_x',
+                                            'cluster_cord_y'])
     outpath = os.path.join(outdir, time_datetime + '-flowstats-dbscan.csv')
     df_final.to_csv(outpath, index=False)
 
-    config.df_dbscan_isolated = df_final.drop_duplicates(subset=['cluster'], keep=False)
+    # Add all the obtained outliers (identified by DBSCAN as cluster == -1) to a specific df.
+    config.df_dbscan_isolated = df_final[df_final.cluster == -1]

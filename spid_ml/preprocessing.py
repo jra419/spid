@@ -18,7 +18,7 @@ def preprocess():
 
     norm_ip = np.array(norm1)
 
-    norm_ip = np.delete(norm_ip, [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], axis=1)
+    norm_ip = np.delete(norm_ip, [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], axis=1)
 
     # Obtain from ONOS the number of packets/bytes corresponding to the current flow.
     # list_pb = request_pb(str(norm_src_ip[0, 0]), str(norm_dst_ip[0, 1]))
@@ -53,16 +53,13 @@ def preprocess():
         config.df.loc[m, ['bm_ip_dst_port_dst']] = config.norm['bm_ip_dst_port_dst'].values[0]
 
         # We only update the following values if they are != 0.
-        # The data plane will only send values != 0 if the tcp flag is syn or the protocol is icmp, respectively.
-
-        if config.norm['cm_ip_dst_tcp_syn'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_dst_tcp_syn']] = config.norm['cm_ip_dst_tcp_syn'].values[0]
+        # The values will only be != 0 if the tcp flags are syn/ack/rst or the protocol is icmp, respectively.
 
         if config.norm['cm_ip_dst_icmp'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_icmp']] = config.norm['cm_ip_dst_icmp'].values[0]
 
-        # Due to way the stats are sent from the data plane, only one of the ports, if any, can be != 0.
-        # If a port != 0, we update its value in the dataframe.
+        # Due to way the following stats are sent from the data plane, only one of each group, if any, can be != 0.
+        # If a value != 0, we update it in the dataframe.
 
         if config.norm['cm_ip_dst_port_21'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_port_21']] = config.norm['cm_ip_dst_port_21'].values[0]
@@ -70,6 +67,13 @@ def preprocess():
             config.df.loc[m, ['cm_ip_dst_port_22']] = config.norm['cm_ip_dst_port_22'].values[0]
         elif config.norm['cm_ip_dst_port_80'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_port_80']] = config.norm['cm_ip_dst_port_80'].values[0]
+
+        if config.norm['cm_ip_dst_tcp_syn'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_dst_tcp_syn']] = config.norm['cm_ip_dst_tcp_syn'].values[0]
+        elif config.norm['cm_ip_dst_tcp_ack'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_dst_tcp_ack']] = config.norm['cm_ip_dst_tcp_ack'].values[0]
+        elif config.norm['cm_ip_dst_tcp_rst'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_dst_tcp_rst']] = config.norm['cm_ip_dst_tcp_rst'].values[0]
 
     else:
         config.df = config.df.append(config.norm, ignore_index=True)
@@ -146,6 +150,10 @@ def normalization():
         config.flowstats_norm['cm_ip_dst_port_80'].values.reshape(-1, 1))
     scaled_cm_ip_dst_tcp_syn = MinMaxScaler().fit_transform(
         config.flowstats_norm['cm_ip_dst_tcp_syn'].values.reshape(-1, 1))
+    scaled_cm_ip_dst_tcp_ack = MinMaxScaler().fit_transform(
+        config.flowstats_norm['cm_ip_dst_tcp_ack'].values.reshape(-1, 1))
+    scaled_cm_ip_dst_tcp_rst = MinMaxScaler().fit_transform(
+        config.flowstats_norm['cm_ip_dst_tcp_rst'].values.reshape(-1, 1))
     scaled_cm_ip_dst_icmp = MinMaxScaler().fit_transform(config.flowstats_norm['cm_ip_dst_icmp'].values.reshape(-1, 1))
     scaled_bm_ip_src = MinMaxScaler().fit_transform(config.flowstats_norm['bm_ip_src'].values.reshape(-1, 1))
     scaled_bm_ip_dst = MinMaxScaler().fit_transform(config.flowstats_norm['bm_ip_dst'].values.reshape(-1, 1))
@@ -165,6 +173,8 @@ def normalization():
     config.flowstats_norm['cm_ip_dst_port_22'] = scaled_cm_ip_dst_port_22
     config.flowstats_norm['cm_ip_dst_port_80'] = scaled_cm_ip_dst_port_80
     config.flowstats_norm['cm_ip_dst_tcp_syn'] = scaled_cm_ip_dst_tcp_syn
+    config.flowstats_norm['cm_ip_dst_tcp_ack'] = scaled_cm_ip_dst_tcp_ack
+    config.flowstats_norm['cm_ip_dst_tcp_rst'] = scaled_cm_ip_dst_tcp_rst
     config.flowstats_norm['cm_ip_dst_icmp'] = scaled_cm_ip_dst_icmp
     config.flowstats_norm['bm_ip_src'] = scaled_bm_ip_src
     config.flowstats_norm['bm_ip_dst'] = scaled_bm_ip_dst
