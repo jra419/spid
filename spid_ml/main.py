@@ -28,6 +28,8 @@ def spid_rest():
 def ml_pipeline(response):
     output_preprocessing = preprocessing.preprocess()
     if output_preprocessing:
+        # Update any related flows already in the dataset with the latest data.
+        preprocessing.update_related()
         # Data normalization into a [0,1] scale.
         preprocessing.normalization()
     if config.df.shape[0] >= 3:

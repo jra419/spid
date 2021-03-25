@@ -96,7 +96,7 @@ echo "--------------------"
 echo "Running tcpreplay"
 echo "--------------------"
 
-sudo tcpreplay -i s1-eth2 -K --pps=500 "$1"
+sudo tcpreplay -i s1-eth2 -K --pps=1000 "$1"
 
 while :; do
     sleep 5

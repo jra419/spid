@@ -63,16 +63,16 @@ def preprocess():
 
         if config.norm['cm_ip_dst_port_21'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_port_21']] = config.norm['cm_ip_dst_port_21'].values[0]
-        elif config.norm['cm_ip_dst_port_22'].values[0] != 0:
+        if config.norm['cm_ip_dst_port_22'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_port_22']] = config.norm['cm_ip_dst_port_22'].values[0]
-        elif config.norm['cm_ip_dst_port_80'].values[0] != 0:
+        if config.norm['cm_ip_dst_port_80'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_port_80']] = config.norm['cm_ip_dst_port_80'].values[0]
 
         if config.norm['cm_ip_dst_tcp_syn'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_tcp_syn']] = config.norm['cm_ip_dst_tcp_syn'].values[0]
-        elif config.norm['cm_ip_dst_tcp_ack'].values[0] != 0:
+        if config.norm['cm_ip_dst_tcp_ack'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_tcp_ack']] = config.norm['cm_ip_dst_tcp_ack'].values[0]
-        elif config.norm['cm_ip_dst_tcp_rst'].values[0] != 0:
+        if config.norm['cm_ip_dst_tcp_rst'].values[0] != 0:
             config.df.loc[m, ['cm_ip_dst_tcp_rst']] = config.norm['cm_ip_dst_tcp_rst'].values[0]
 
     else:
@@ -182,3 +182,18 @@ def normalization():
     config.flowstats_norm['bm_ip_src_port_dst'] = scaled_bm_ip_src_port_dst
     config.flowstats_norm['bm_ip_dst_port_src'] = scaled_bm_ip_dst_port_src
     config.flowstats_norm['bm_ip_dst_port_dst'] = scaled_bm_ip_dst_port_dst
+
+
+def update_related():
+    config.df.loc[config.df['ip_src'] == config.norm['ip_src'].values[0], 'bm_ip_src'] \
+        = config.norm['bm_ip_src'].values[0]
+    config.df.loc[config.df['ip_src'] == config.norm['ip_src'].values[0], 'bm_ip_src_port_src'] \
+        = config.norm['bm_ip_src_port_src'].values[0]
+    config.df.loc[config.df['ip_src'] == config.norm['ip_src'].values[0], 'bm_ip_src_port_dst'] \
+        = config.norm['bm_ip_src_port_dst'].values[0]
+    config.df.loc[config.df['ip_dst'] == config.norm['ip_dst'].values[0], 'bm_ip_dst'] \
+        = config.norm['bm_ip_dst'].values[0]
+    config.df.loc[config.df['ip_dst'] == config.norm['ip_dst'].values[0], 'bm_ip_dst_port_src'] \
+        = config.norm['bm_ip_dst_port_src'].values[0]
+    config.df.loc[config.df['ip_dst'] == config.norm['ip_dst'].values[0], 'bm_ip_dst_port_dst'] \
+        = config.norm['bm_ip_dst_port_dst'].values[0]
