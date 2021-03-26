@@ -1,11 +1,9 @@
 #!/usr/bin/python3
-import os
 import sys
 sys.path.append('..')
 import config
 import matplotlib.pyplot as plt
 import numpy as np
-from datetime import datetime
 from sklearn.neighbors import NearestNeighbors
 from sklearn.decomposition import PCA
 from sklearn.cluster import DBSCAN
@@ -15,10 +13,10 @@ plt.style.use('seaborn')
 
 # Calculate the distances between all data points.
 # Sort them in ascending order.
-def epsilon(flowstats):
+def epsilon(spid_stats):
     nn = NearestNeighbors(n_neighbors=2)
-    nn_data = nn.fit(flowstats)
-    distances, indices = nn_data.kneighbors(flowstats)
+    nn_data = nn.fit(spid_stats)
+    distances, indices = nn_data.kneighbors(spid_stats)
     distances = np.sort(distances, axis=0)
     distances = distances[:, 1]
 
@@ -35,46 +33,34 @@ def epsilon(flowstats):
 
 
 def dbscan():
-    (eps, eps_index) = epsilon(config.flowstats_norm)
+    (eps, eps_index) = epsilon(config.spid_stats_norm)
 
     eps = eps[eps_index - 2]
 
     if eps <= 0:
         eps = 0.3
 
-    labels = DBSCAN(eps=eps, min_samples=2, n_jobs=-1).fit_predict(config.flowstats_norm)
+    labels = DBSCAN(eps=eps, min_samples=2, n_jobs=-1).fit_predict(config.spid_stats_norm)
 
-    y = np.array(config.flowstats)
+    y = np.array(config.spid_stats)
 
-    x_pca = PCA(n_components=2, whiten=True).fit_transform(config.flowstats_norm)
+    x_pca = PCA(n_components=2, whiten=True).fit_transform(config.spid_stats_norm)
 
     x_pca_x = np.array(x_pca[:, 0])
     x_pca_y = np.array(x_pca[:, 1])
 
-    flowstats_final = np.insert(y, y.shape[1], labels, axis=1)
-    flowstats_final = np.insert(flowstats_final, flowstats_final.shape[1], x_pca_x, axis=1)
-    flowstats_final = np.insert(flowstats_final, flowstats_final.shape[1], x_pca_y, axis=1)
+    dbscan_final = np.insert(y, y.shape[1], labels, axis=1)
+    dbscan_final = np.insert(dbscan_final, dbscan_final.shape[1], x_pca_x, axis=1)
+    dbscan_final = np.insert(dbscan_final, dbscan_final.shape[1], x_pca_y, axis=1)
 
     # Final Cluster Dataframes
 
-    now = datetime.now()
+    config.df_dbscan_final = config.pd.DataFrame(dbscan_final,
+                                                 columns=['ip_src', 'ip_dst', 'cm_ip', 'cm_ip_port_21', 'cm_ip_port_22',
+                                                          'cm_ip_port_80', 'cm_ip_tcp_syn', 'cm_ip_tcp_ack',
+                                                          'cm_ip_tcp_rst', 'cm_ip_icmp', 'bm_ip_src', 'bm_ip_dst',
+                                                          'bm_ip_src_port_src', 'bm_ip_src_port_dst',
+                                                          'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'dbscan_cluster',
+                                                          'dbscan_cord_x', 'dbscan_cord_y'])
 
-    ts_date = now.strftime('%Y-%m-%d')
-    time_datetime = now.strftime('%Y-%m-%d-%H-%M-%S')
-
-    outdir = './' + ts_date
-    if not os.path.exists('./' + ts_date):
-        os.mkdir(outdir)
-
-    df_final = config.pd.DataFrame(flowstats_final,
-                                   columns=['ip_src', 'ip_dst', 'cm_ip_src_ip_dst', 'cm_ip_dst_port_21',
-                                            'cm_ip_dst_port_22', 'cm_ip_dst_port_80', 'cm_ip_dst_tcp_syn',
-                                            'cm_ip_dst_tcp_ack', 'cm_ip_dst_tcp_rst', 'cm_ip_dst_icmp', 'bm_ip_src',
-                                            'bm_ip_dst', 'bm_ip_src_port_src', 'bm_ip_src_port_dst',
-                                            'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'cluster', 'cluster_cord_x',
-                                            'cluster_cord_y'])
-    outpath = os.path.join(outdir, time_datetime + '-flowstats-dbscan.csv')
-    df_final.to_csv(outpath, index=False)
-
-    # Add all the obtained outliers (identified by DBSCAN as cluster == -1) to a specific df.
-    config.df_dbscan_isolated = df_final[df_final.cluster == -1]
+    config.df_dbscan_isolated = config.df_dbscan_final.drop_duplicates(subset=['dbscan_cluster'], keep=False)

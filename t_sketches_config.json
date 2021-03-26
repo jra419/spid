@@ -14,10 +14,10 @@
 				"subtype": "ACTION",
 				"actionId": "c_ingress.sketch_config",
 				"actionParams":{
-					"cm_ip_src_ip_dst_flag": "0",
-					"cm_ip_dst_port_dst_flag": "0",
-					"cm_ip_dst_tcp_flags_flag": "0",
-					"cm_ip_dst_proto_flag": "0",
+					"cm_ip_flag": "0",
+					"cm_ip_port_dst_flag": "0",
+					"cm_ip_tcp_flags_flag": "0",
+					"cm_ip_proto_flag": "0",
 					"bm_ip_src_flag": "0",
 					"bm_ip_dst_flag": "0",
 					"bm_ip_src_port_src_flag": "0",
@@ -41,7 +41,7 @@
 		}	  	
 	},		
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_set_reg_0.t_set_reg",
+		"tableId": "c_ingress.cm_ip.cm_ip_set_reg_0.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -52,7 +52,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_set_reg_0.set_reg",
+				"actionId": "c_ingress.cm_ip.cm_ip_set_reg_0.set_reg",
 				"actionParams":{
 					"current_register": "0",
 					"current_index": "0"
@@ -62,7 +62,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_set_reg_1.t_set_reg",
+		"tableId": "c_ingress.cm_ip.cm_ip_set_reg_1.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -73,7 +73,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_set_reg_1.set_reg",
+				"actionId": "c_ingress.cm_ip.cm_ip_set_reg_1.set_reg",
 				"actionParams":{
 					"current_register": "1",
 					"current_index": "0"
@@ -83,7 +83,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_set_reg_2.t_set_reg",
+		"tableId": "c_ingress.cm_ip.cm_ip_set_reg_2.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -94,7 +94,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_set_reg_2.set_reg",
+				"actionId": "c_ingress.cm_ip.cm_ip_set_reg_2.set_reg",
 				"actionParams":{
 					"current_register": "2",
 					"current_index": "0"
@@ -104,7 +104,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_set_reg_final.t_set_reg",
+		"tableId": "c_ingress.cm_ip.cm_ip_set_reg_final.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -115,7 +115,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_set_reg_final.set_reg",
+				"actionId": "c_ingress.cm_ip.cm_ip_set_reg_final.set_reg",
 				"actionParams":{
 					"current_register": "3",
 					"current_index": "0"
@@ -125,7 +125,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_set_reg_0.t_set_reg",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_set_reg_0.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -136,7 +136,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_set_reg_0.set_reg",
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_set_reg_0.set_reg",
 				"actionParams":{
 					"current_register": "4",
 					"current_index": "0"
@@ -146,7 +146,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_set_reg_1.t_set_reg",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_set_reg_1.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -157,7 +157,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_set_reg_1.set_reg",
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_set_reg_1.set_reg",
 				"actionParams":{
 					"current_register": "5",
 					"current_index": "0"
@@ -167,7 +167,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_set_reg_2.t_set_reg",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_set_reg_2.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -178,7 +178,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_set_reg_2.set_reg",
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_set_reg_2.set_reg",
 				"actionParams":{
 					"current_register": "6",
 					"current_index": "0"
@@ -188,7 +188,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_set_reg_final.t_set_reg",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_set_reg_final.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -199,7 +199,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_set_reg_final.set_reg",
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_set_reg_final.set_reg",
 				"actionParams":{
 					"current_register": "7",
 					"current_index": "0"
@@ -209,7 +209,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_set_reg_0.t_set_reg",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_set_reg_0.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -220,7 +220,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_set_reg_0.set_reg",
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_set_reg_0.set_reg",
 				"actionParams":{
 					"current_register": "8",
 					"current_index": "0"
@@ -230,7 +230,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_set_reg_1.t_set_reg",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_set_reg_1.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -241,7 +241,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_set_reg_1.set_reg",
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_set_reg_1.set_reg",
 				"actionParams":{
 					"current_register": "9",
 					"current_index": "0"
@@ -251,7 +251,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_set_reg_2.t_set_reg",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_set_reg_2.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -262,7 +262,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_set_reg_2.set_reg",
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_set_reg_2.set_reg",
 				"actionParams":{
 					"current_register": "A",
 					"current_index": "0"
@@ -272,7 +272,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_set_reg_final.t_set_reg",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_set_reg_final.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -283,7 +283,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_set_reg_final.set_reg",
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_set_reg_final.set_reg",
 				"actionParams":{
 					"current_register": "B",
 					"current_index": "0"
@@ -293,7 +293,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_set_reg_0.t_set_reg",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_set_reg_0.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -304,7 +304,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_set_reg_0.set_reg",
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_set_reg_0.set_reg",
 				"actionParams":{
 					"current_register": "C",
 					"current_index": "0"
@@ -314,7 +314,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_set_reg_1.t_set_reg",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_set_reg_1.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -325,7 +325,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_set_reg_1.set_reg",
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_set_reg_1.set_reg",
 				"actionParams":{
 					"current_register": "D",
 					"current_index": "0"
@@ -335,7 +335,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_set_reg_2.t_set_reg",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_set_reg_2.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -346,7 +346,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_set_reg_2.set_reg",
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_set_reg_2.set_reg",
 				"actionParams":{
 					"current_register": "E",
 					"current_index": "0"
@@ -356,7 +356,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_set_reg_final.t_set_reg",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_set_reg_final.t_set_reg",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -367,7 +367,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_set_reg_final.set_reg",
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_set_reg_final.set_reg",
 				"actionParams":{
 					"current_register": "F",
 					"current_index": "0"
@@ -986,7 +986,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_epoch_0.t_epoch_check",
+		"tableId": "c_ingress.cm_ip.cm_ip_epoch_0.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -997,7 +997,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_epoch_0.epoch_check_0"
+				"actionId": "c_ingress.cm_ip.cm_ip_epoch_0.epoch_check_0"
 			}
 			]
 		},
@@ -1017,7 +1017,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_epoch_1.t_epoch_check",
+		"tableId": "c_ingress.cm_ip.cm_ip_epoch_1.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1028,7 +1028,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_epoch_1.epoch_check_1"
+				"actionId": "c_ingress.cm_ip.cm_ip_epoch_1.epoch_check_1"
 			}
 			]
 		},
@@ -1048,7 +1048,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_epoch_2.t_epoch_check",
+		"tableId": "c_ingress.cm_ip.cm_ip_epoch_2.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1059,7 +1059,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_epoch_2.epoch_check_2"
+				"actionId": "c_ingress.cm_ip.cm_ip_epoch_2.epoch_check_2"
 			}
 			]
 		},
@@ -1079,7 +1079,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_epoch_0.t_epoch_check",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_epoch_0.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1090,7 +1090,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_epoch_0.epoch_check_4"
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_epoch_0.epoch_check_4"
 			}
 			]
 		},
@@ -1110,7 +1110,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_epoch_1.t_epoch_check",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_epoch_1.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1121,7 +1121,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_epoch_1.epoch_check_5"
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_epoch_1.epoch_check_5"
 			}
 			]
 		},
@@ -1141,7 +1141,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_epoch_2.t_epoch_check",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_epoch_2.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1152,7 +1152,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_epoch_2.epoch_check_6"
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_epoch_2.epoch_check_6"
 			}
 			]
 		},
@@ -1172,7 +1172,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_epoch_0.t_epoch_check",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_epoch_0.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1183,7 +1183,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_epoch_0.epoch_check_8"
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_epoch_0.epoch_check_8"
 			}
 			]
 		},
@@ -1203,7 +1203,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_epoch_1.t_epoch_check",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_epoch_1.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1214,7 +1214,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_epoch_1.epoch_check_9"
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_epoch_1.epoch_check_9"
 			}
 			]
 		},
@@ -1234,7 +1234,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_epoch_2.t_epoch_check",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_epoch_2.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1245,7 +1245,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_epoch_2.epoch_check_10"
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_epoch_2.epoch_check_10"
 			}
 			]
 		},
@@ -1265,7 +1265,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_epoch_0.t_epoch_check",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_epoch_0.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1276,7 +1276,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_epoch_0.epoch_check_12"
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_epoch_0.epoch_check_12"
 			}
 			]
 		},
@@ -1296,7 +1296,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_epoch_1.t_epoch_check",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_epoch_1.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1307,7 +1307,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_epoch_1.epoch_check_13"
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_epoch_1.epoch_check_13"
 			}
 			]
 		},
@@ -1327,7 +1327,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_epoch_2.t_epoch_check",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_epoch_2.t_epoch_check",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -1338,7 +1338,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_epoch_2.epoch_check_14"
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_epoch_2.epoch_check_14"
 			}
 			]
 		},
@@ -2133,7 +2133,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_write_0.t_sketch_write",
+		"tableId": "c_ingress.cm_ip.cm_ip_write_0.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2144,7 +2144,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_write_0.sketch_write_0"
+				"actionId": "c_ingress.cm_ip.cm_ip_write_0.sketch_write_0"
 			}
 			]
 		},
@@ -2164,7 +2164,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_write_1.t_sketch_write",
+		"tableId": "c_ingress.cm_ip.cm_ip_write_1.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2175,7 +2175,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_write_1.sketch_write_1"
+				"actionId": "c_ingress.cm_ip.cm_ip_write_1.sketch_write_1"
 			}
 			]
 		},
@@ -2195,7 +2195,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_write_2.t_sketch_write",
+		"tableId": "c_ingress.cm_ip.cm_ip_write_2.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2206,7 +2206,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_write_2.sketch_write_2"
+				"actionId": "c_ingress.cm_ip.cm_ip_write_2.sketch_write_2"
 			}
 			]
 		},
@@ -2226,7 +2226,7 @@
 		}	  	
 	},
 	{
-		"tableId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_write_final.t_sketch_write",
+		"tableId": "c_ingress.cm_ip.cm_ip_write_final.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2237,7 +2237,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_src_ip_dst.cm_ip_src_ip_dst_write_final.sketch_write_3"
+				"actionId": "c_ingress.cm_ip.cm_ip_write_final.sketch_write_3"
 			}
 			]
 		},
@@ -2257,7 +2257,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_write_0.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_write_0.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2268,7 +2268,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_write_0.sketch_write_4"
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_write_0.sketch_write_4"
 			}
 			]
 		},
@@ -2288,7 +2288,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_write_1.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_write_1.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2299,7 +2299,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_write_1.sketch_write_5"
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_write_1.sketch_write_5"
 			}
 			]
 		},
@@ -2319,7 +2319,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_write_2.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_write_2.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2330,7 +2330,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_write_2.sketch_write_6"
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_write_2.sketch_write_6"
 			}
 			]
 		},
@@ -2350,7 +2350,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_write_final.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_write_final.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2361,7 +2361,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_port_dst.cm_ip_dst_port_dst_write_final.sketch_write_7"
+				"actionId": "c_ingress.cm_ip_port_dst.cm_ip_port_dst_write_final.sketch_write_7"
 			}
 			]
 		},
@@ -2381,7 +2381,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_write_0.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_write_0.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2392,7 +2392,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_write_0.sketch_write_8"
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_write_0.sketch_write_8"
 			}
 			]
 		},
@@ -2412,7 +2412,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_write_1.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_write_1.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2423,7 +2423,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_write_1.sketch_write_9"
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_write_1.sketch_write_9"
 			}
 			]
 		},
@@ -2443,7 +2443,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_write_2.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_write_2.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2454,7 +2454,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_write_2.sketch_write_10"
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_write_2.sketch_write_10"
 			}
 			]
 		},
@@ -2474,7 +2474,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_write_final.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_write_final.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2485,7 +2485,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_tcp_flags.cm_ip_dst_tcp_flags_write_final.sketch_write_11"
+				"actionId": "c_ingress.cm_ip_tcp_flags.cm_ip_tcp_flags_write_final.sketch_write_11"
 			}
 			]
 		},
@@ -2505,7 +2505,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_write_0.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_write_0.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2516,7 +2516,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_write_0.sketch_write_12"
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_write_0.sketch_write_12"
 			}
 			]
 		},
@@ -2536,7 +2536,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_write_1.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_write_1.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2547,7 +2547,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_write_1.sketch_write_13"
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_write_1.sketch_write_13"
 			}
 			]
 		},
@@ -2567,7 +2567,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_write_2.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_write_2.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2578,7 +2578,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_write_2.sketch_write_14"
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_write_2.sketch_write_14"
 			}
 			]
 		},
@@ -2598,7 +2598,7 @@
 		}
 	},
 	{
-		"tableId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_write_final.t_sketch_write",
+		"tableId": "c_ingress.cm_ip_proto.cm_ip_proto_write_final.t_sketch_write",
 		"priority": 40000,
 		"timeout": 0,
 		"isPermanent": true,
@@ -2609,7 +2609,7 @@
 			{
 				"type": "PROTOCOL_INDEPENDENT",
 				"subtype": "ACTION",
-				"actionId": "c_ingress.cm_ip_dst_proto.cm_ip_dst_proto_write_final.sketch_write_15"
+				"actionId": "c_ingress.cm_ip_proto.cm_ip_proto_write_final.sketch_write_15"
 			}
 			]
 		},

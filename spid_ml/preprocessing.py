@@ -44,7 +44,7 @@ def preprocess():
         m = (config.df['ip_src'].values == config.norm['ip_src'].values) \
             & (config.df['ip_dst'].values == config.norm['ip_dst'].values)
 
-        config.df.loc[m, ['cm_ip_src_ip_dst']] = config.norm['cm_ip_src_ip_dst'].values[0]
+        config.df.loc[m, ['cm_ip']] = config.norm['cm_ip'].values[0]
         config.df.loc[m, ['bm_ip_src']] = config.norm['bm_ip_src'].values[0]
         config.df.loc[m, ['bm_ip_dst']] = config.norm['bm_ip_dst'].values[0]
         config.df.loc[m, ['bm_ip_src_port_src']] = config.norm['bm_ip_src_port_src'].values[0]
@@ -55,25 +55,25 @@ def preprocess():
         # We only update the following values if they are != 0.
         # The values will only be != 0 if the tcp flags are syn/ack/rst or the protocol is icmp, respectively.
 
-        if config.norm['cm_ip_dst_icmp'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_dst_icmp']] = config.norm['cm_ip_dst_icmp'].values[0]
+        if config.norm['cm_ip_icmp'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_icmp']] = config.norm['cm_ip_icmp'].values[0]
 
         # Due to way the following stats are sent from the data plane, only one of each group, if any, can be != 0.
         # If a value != 0, we update it in the dataframe.
 
-        if config.norm['cm_ip_dst_port_21'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_dst_port_21']] = config.norm['cm_ip_dst_port_21'].values[0]
-        if config.norm['cm_ip_dst_port_22'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_dst_port_22']] = config.norm['cm_ip_dst_port_22'].values[0]
-        if config.norm['cm_ip_dst_port_80'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_dst_port_80']] = config.norm['cm_ip_dst_port_80'].values[0]
+        if config.norm['cm_ip_port_21'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_port_21']] = config.norm['cm_ip_port_21'].values[0]
+        if config.norm['cm_ip_port_22'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_port_22']] = config.norm['cm_ip_port_22'].values[0]
+        if config.norm['cm_ip_port_80'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_port_80']] = config.norm['cm_ip_port_80'].values[0]
 
-        if config.norm['cm_ip_dst_tcp_syn'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_dst_tcp_syn']] = config.norm['cm_ip_dst_tcp_syn'].values[0]
-        if config.norm['cm_ip_dst_tcp_ack'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_dst_tcp_ack']] = config.norm['cm_ip_dst_tcp_ack'].values[0]
-        if config.norm['cm_ip_dst_tcp_rst'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_dst_tcp_rst']] = config.norm['cm_ip_dst_tcp_rst'].values[0]
+        if config.norm['cm_ip_tcp_syn'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_tcp_syn']] = config.norm['cm_ip_tcp_syn'].values[0]
+        if config.norm['cm_ip_tcp_ack'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_tcp_ack']] = config.norm['cm_ip_tcp_ack'].values[0]
+        if config.norm['cm_ip_tcp_rst'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_tcp_rst']] = config.norm['cm_ip_tcp_rst'].values[0]
 
     else:
         config.df = config.df.append(config.norm, ignore_index=True)
@@ -119,69 +119,69 @@ def request_pb(ip_src, ip_dst):
 
 
 def normalization():
-    config.flowstats = config.df.copy()
+    config.spid_stats = config.df.copy()
 
     # Data Normalization: Non-Numerical Values
 
-    config.flowstats_norm = config.flowstats.copy()
+    config.spid_stats_norm = config.spid_stats.copy()
 
     ip_encoder = preprocessing.LabelEncoder()
 
-    label_encoding = config.flowstats_norm['ip_src'].append(config.flowstats_norm['ip_dst'])
+    label_encoding = config.spid_stats_norm['ip_src'].append(config.spid_stats_norm['ip_dst'])
 
     ip_encoder.fit(label_encoding)
-    src_ip = ip_encoder.transform(config.flowstats_norm['ip_src'])
-    dst_ip = ip_encoder.transform(config.flowstats_norm['ip_dst'])
+    src_ip = ip_encoder.transform(config.spid_stats_norm['ip_src'])
+    dst_ip = ip_encoder.transform(config.spid_stats_norm['ip_dst'])
 
-    config.flowstats_norm['ip_src'] = src_ip
-    config.flowstats_norm['ip_dst'] = dst_ip
+    config.spid_stats_norm['ip_src'] = src_ip
+    config.spid_stats_norm['ip_dst'] = dst_ip
 
     # Data Normalization: Value Scaling
 
-    scaled_src_ip = MinMaxScaler().fit_transform(config.flowstats_norm['ip_src'].values.reshape(-1, 1))
-    scaled_dst_ip = MinMaxScaler().fit_transform(config.flowstats_norm['ip_dst'].values.reshape(-1, 1))
-    scaled_cm_ip_src_ip_dst = MinMaxScaler().fit_transform(
-        config.flowstats_norm['cm_ip_src_ip_dst'].values.reshape(-1, 1))
-    scaled_cm_ip_dst_port_21 = MinMaxScaler().fit_transform(
-        config.flowstats_norm['cm_ip_dst_port_21'].values.reshape(-1, 1))
-    scaled_cm_ip_dst_port_22 = MinMaxScaler().fit_transform(
-        config.flowstats_norm['cm_ip_dst_port_22'].values.reshape(-1, 1))
-    scaled_cm_ip_dst_port_80 = MinMaxScaler().fit_transform(
-        config.flowstats_norm['cm_ip_dst_port_80'].values.reshape(-1, 1))
-    scaled_cm_ip_dst_tcp_syn = MinMaxScaler().fit_transform(
-        config.flowstats_norm['cm_ip_dst_tcp_syn'].values.reshape(-1, 1))
-    scaled_cm_ip_dst_tcp_ack = MinMaxScaler().fit_transform(
-        config.flowstats_norm['cm_ip_dst_tcp_ack'].values.reshape(-1, 1))
-    scaled_cm_ip_dst_tcp_rst = MinMaxScaler().fit_transform(
-        config.flowstats_norm['cm_ip_dst_tcp_rst'].values.reshape(-1, 1))
-    scaled_cm_ip_dst_icmp = MinMaxScaler().fit_transform(config.flowstats_norm['cm_ip_dst_icmp'].values.reshape(-1, 1))
-    scaled_bm_ip_src = MinMaxScaler().fit_transform(config.flowstats_norm['bm_ip_src'].values.reshape(-1, 1))
-    scaled_bm_ip_dst = MinMaxScaler().fit_transform(config.flowstats_norm['bm_ip_dst'].values.reshape(-1, 1))
+    scaled_src_ip = MinMaxScaler().fit_transform(config.spid_stats_norm['ip_src'].values.reshape(-1, 1))
+    scaled_dst_ip = MinMaxScaler().fit_transform(config.spid_stats_norm['ip_dst'].values.reshape(-1, 1))
+    scaled_cm_ip = MinMaxScaler().fit_transform(
+        config.spid_stats_norm['cm_ip'].values.reshape(-1, 1))
+    scaled_cm_ip_port_21 = MinMaxScaler().fit_transform(
+        config.spid_stats_norm['cm_ip_port_21'].values.reshape(-1, 1))
+    scaled_cm_ip_port_22 = MinMaxScaler().fit_transform(
+        config.spid_stats_norm['cm_ip_port_22'].values.reshape(-1, 1))
+    scaled_cm_ip_port_80 = MinMaxScaler().fit_transform(
+        config.spid_stats_norm['cm_ip_port_80'].values.reshape(-1, 1))
+    scaled_cm_ip_tcp_syn = MinMaxScaler().fit_transform(
+        config.spid_stats_norm['cm_ip_tcp_syn'].values.reshape(-1, 1))
+    scaled_cm_ip_tcp_ack = MinMaxScaler().fit_transform(
+        config.spid_stats_norm['cm_ip_tcp_ack'].values.reshape(-1, 1))
+    scaled_cm_ip_tcp_rst = MinMaxScaler().fit_transform(
+        config.spid_stats_norm['cm_ip_tcp_rst'].values.reshape(-1, 1))
+    scaled_cm_ip_icmp = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_icmp'].values.reshape(-1, 1))
+    scaled_bm_ip_src = MinMaxScaler().fit_transform(config.spid_stats_norm['bm_ip_src'].values.reshape(-1, 1))
+    scaled_bm_ip_dst = MinMaxScaler().fit_transform(config.spid_stats_norm['bm_ip_dst'].values.reshape(-1, 1))
     scaled_bm_ip_src_port_src = MinMaxScaler().fit_transform(
-        config.flowstats_norm['bm_ip_src_port_src'].values.reshape(-1, 1))
+        config.spid_stats_norm['bm_ip_src_port_src'].values.reshape(-1, 1))
     scaled_bm_ip_src_port_dst = MinMaxScaler().fit_transform(
-        config.flowstats_norm['bm_ip_src_port_dst'].values.reshape(-1, 1))
+        config.spid_stats_norm['bm_ip_src_port_dst'].values.reshape(-1, 1))
     scaled_bm_ip_dst_port_src = MinMaxScaler().fit_transform(
-        config.flowstats_norm['bm_ip_dst_port_src'].values.reshape(-1, 1))
+        config.spid_stats_norm['bm_ip_dst_port_src'].values.reshape(-1, 1))
     scaled_bm_ip_dst_port_dst = MinMaxScaler().fit_transform(
-        config.flowstats_norm['bm_ip_dst_port_dst'].values.reshape(-1, 1))
+        config.spid_stats_norm['bm_ip_dst_port_dst'].values.reshape(-1, 1))
 
-    config.flowstats_norm['ip_src'] = scaled_src_ip
-    config.flowstats_norm['ip_dst'] = scaled_dst_ip
-    config.flowstats_norm['cm_ip_src_ip_dst'] = scaled_cm_ip_src_ip_dst
-    config.flowstats_norm['cm_ip_dst_port_21'] = scaled_cm_ip_dst_port_21
-    config.flowstats_norm['cm_ip_dst_port_22'] = scaled_cm_ip_dst_port_22
-    config.flowstats_norm['cm_ip_dst_port_80'] = scaled_cm_ip_dst_port_80
-    config.flowstats_norm['cm_ip_dst_tcp_syn'] = scaled_cm_ip_dst_tcp_syn
-    config.flowstats_norm['cm_ip_dst_tcp_ack'] = scaled_cm_ip_dst_tcp_ack
-    config.flowstats_norm['cm_ip_dst_tcp_rst'] = scaled_cm_ip_dst_tcp_rst
-    config.flowstats_norm['cm_ip_dst_icmp'] = scaled_cm_ip_dst_icmp
-    config.flowstats_norm['bm_ip_src'] = scaled_bm_ip_src
-    config.flowstats_norm['bm_ip_dst'] = scaled_bm_ip_dst
-    config.flowstats_norm['bm_ip_src_port_src'] = scaled_bm_ip_src_port_src
-    config.flowstats_norm['bm_ip_src_port_dst'] = scaled_bm_ip_src_port_dst
-    config.flowstats_norm['bm_ip_dst_port_src'] = scaled_bm_ip_dst_port_src
-    config.flowstats_norm['bm_ip_dst_port_dst'] = scaled_bm_ip_dst_port_dst
+    config.spid_stats_norm['ip_src'] = scaled_src_ip
+    config.spid_stats_norm['ip_dst'] = scaled_dst_ip
+    config.spid_stats_norm['cm_ip'] = scaled_cm_ip
+    config.spid_stats_norm['cm_ip_port_21'] = scaled_cm_ip_port_21
+    config.spid_stats_norm['cm_ip_port_22'] = scaled_cm_ip_port_22
+    config.spid_stats_norm['cm_ip_port_80'] = scaled_cm_ip_port_80
+    config.spid_stats_norm['cm_ip_tcp_syn'] = scaled_cm_ip_tcp_syn
+    config.spid_stats_norm['cm_ip_tcp_ack'] = scaled_cm_ip_tcp_ack
+    config.spid_stats_norm['cm_ip_tcp_rst'] = scaled_cm_ip_tcp_rst
+    config.spid_stats_norm['cm_ip_icmp'] = scaled_cm_ip_icmp
+    config.spid_stats_norm['bm_ip_src'] = scaled_bm_ip_src
+    config.spid_stats_norm['bm_ip_dst'] = scaled_bm_ip_dst
+    config.spid_stats_norm['bm_ip_src_port_src'] = scaled_bm_ip_src_port_src
+    config.spid_stats_norm['bm_ip_src_port_dst'] = scaled_bm_ip_src_port_dst
+    config.spid_stats_norm['bm_ip_dst_port_src'] = scaled_bm_ip_dst_port_src
+    config.spid_stats_norm['bm_ip_dst_port_dst'] = scaled_bm_ip_dst_port_dst
 
 
 def update_related():
