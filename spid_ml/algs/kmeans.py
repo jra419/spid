@@ -21,7 +21,7 @@ def elbow_method(spid_stats):
         final_range = 25
 
     for n in range(2, final_range):
-        km = KMeans(n_clusters=n)
+        km = KMeans(n_clusters=n, init='k-means++')
         km.fit(X=spid_stats)
         wcss.append(km.inertia_)
 
@@ -78,7 +78,7 @@ def kmeans():
 
     # Fitting the input data
 
-    km = KMeans(n_clusters=n_clusters_all, init='k-means++', max_iter=1000, n_init=20) \
+    km = KMeans(n_clusters=n_clusters_all, init='k-means++') \
         .fit(config.spid_stats_norm)
     labels = km.predict(config.spid_stats_norm)
 

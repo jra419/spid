@@ -10,13 +10,12 @@ app = Flask(__name__)
 
 
 # Receives flow statistics sent by ONOS via REST.
-@app.route('/add/', methods=['POST'])
+@app.route('/task/', methods=['POST'])
 def spid_rest():
     if request.method == 'POST':
         decoded_data = request.data.decode('utf-8')
         params = json.loads(decoded_data)
         config.norm = pd.json_normalize(params)
-
         return "0"
 
 
