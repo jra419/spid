@@ -41,9 +41,9 @@ bazel run onos-local -- clean &
 
 sleep 30
 
-tail -f /tmp/onos-2.2.1-SNAPSHOT/onos.log | while read -r LOGLINE
+tail -f /tmp/onos-2.2.9-SNAPSHOT/onos.log | while read -r LOGLINE
 do
-   [[ "${LOGLINE}" == *"Application org.onosproject.drivers.ciena.c5170 has been installed"* ]] && pkill -P $$ tail
+   [[ "${LOGLINE}" == *"Application org.onosproject.drivers.cisco.netconf has been installed"* ]] && pkill -P $$ tail
 done
 echo "
 ----
@@ -52,15 +52,15 @@ echo "
 ----
 ----"
 
-sleep 15
+sleep 5
 
 echo "--------------------"
 echo "Starting BMv2 switch"
 echo "--------------------"
 
-sudo simple_switch_grpc --device-id 1 -i 1@s1-eth2 --thrift-port 36869 -Lwarn --no-p4  -- --cpu-port 255 --grpc-server-addr 0.0.0.0:50001 > /dev/null &
+sudo "$HOME"/p4tools/bmv2/targets/simple_switch_grpc/simple_switch_grpc --device-id 1 -i 1@s1-eth2 --thrift-port 36869 -Lwarn --no-p4  -- --cpu-port 255 --grpc-server-addr 0.0.0.0:50001 > /dev/null &
 
-sleep 10
+sleep 5
 
 echo "--------------------"
 echo "Pushing netconf and host info to ONOS"
@@ -96,7 +96,7 @@ echo "--------------------"
 echo "Running tcpreplay"
 echo "--------------------"
 
-sudo tcpreplay -i s1-eth2 -K --pps=1000 "$1"
+sudo tcpreplay -i s1-eth2 -K --pps=1000 "$@"
 
 while :; do
     sleep 5
