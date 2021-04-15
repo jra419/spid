@@ -21,7 +21,7 @@ def epsilon(spid_stats):
     distances = distances[:, 1]
 
     x1, y1 = 2, distances[0]
-    x2, y2 = 25, distances[len(distances) - 1]
+    x2, y2 = 30, distances[len(distances) - 1]
     distances_final = []
     for i in range(len(distances)):
         x0 = i + 2

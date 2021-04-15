@@ -15,10 +15,10 @@ def elbow_method(spid_stats):
     # Sum of square distances
     wcss = []
 
-    if spid_stats.shape[0] < 25:
+    if spid_stats.shape[0] < 30:
         final_range = spid_stats.shape[0]
     else:
-        final_range = 25
+        final_range = 30
 
     for n in range(2, final_range):
         km = KMeans(n_clusters=n, init='k-means++')
@@ -26,7 +26,7 @@ def elbow_method(spid_stats):
         wcss.append(km.inertia_)
 
     x1, y1 = 2, wcss[0]
-    x2, y2 = 25, wcss[len(wcss) - 1]
+    x2, y2 = 30, wcss[len(wcss) - 1]
     distances = []
     for i in range(len(wcss)):
         x0 = i + 2
