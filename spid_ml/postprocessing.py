@@ -45,15 +45,17 @@ def postprocess():
 
     # Add the isolated cluster data to the final dataframe
 
-    config.df_final_combined = config.df_final_combined.join(df_kmeans_temp['kmeans_isolated'])
-    config.df_final_combined = config.df_final_combined.join(df_dbscan_temp['dbscan_isolated'])
+    if config.args.kmeans:
+        config.df_final_combined = config.df_final_combined.join(df_kmeans_temp['kmeans_isolated'])
+    if config.args.dbscan:
+        config.df_final_combined = config.df_final_combined.join(df_dbscan_temp['dbscan_isolated'])
 
     # Output the final dataframe to a csv
 
-    now = datetime.now()
+    config.now = datetime.now()
 
-    ts_date = now.strftime('%Y-%m-%d')
-    ts_datetime = now.strftime('%Y-%m-%d-%H-%M-%S')
+    ts_date = config.now.strftime('%Y-%m-%d')
+    ts_datetime = config.now.strftime('%Y-%m-%d-%H-%M-%S-%f')[:-3]
 
     outdir = './output/' + ts_date
     if not os.path.exists('./output/' + ts_date):

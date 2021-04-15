@@ -3,6 +3,7 @@ import config
 import preprocessing
 import postprocessing
 from algs import dbscan, kmeans
+from eval import eval_counter
 import pandas as pd
 from flask import Flask, request, json
 
@@ -31,12 +32,13 @@ def ml_pipeline(response):
         preprocessing.update_related()
         # Data normalization into a [0,1] scale.
         preprocessing.normalization()
-    if config.df.shape[0] >= 3:
+    if config.df.shape[0] >= 10:
         if config.args.kmeans:
             kmeans.kmeans()
         if config.args.dbscan:
             dbscan.dbscan()
         postprocessing.postprocess()
+        eval_counter.counter()
     return response
 
 
