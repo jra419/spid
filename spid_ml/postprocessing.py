@@ -11,8 +11,11 @@ def postprocess():
     df_kmeans_temp = pd.DataFrame()
     df_dbscan_temp = pd.DataFrame()
 
-    # K-means: add the clusters and respective coordinates to the final dataframe
+    # K-means: add the clusters and respective coordinates to the final dataframe.
+
     if config.args.kmeans:
+        # Clusters composed of a single flow.
+
         df_kmeans_temp = pd.merge(config.df_final_combined, config.df_kmeans_isolated,
                                   on=['ip_src', 'ip_dst', 'cm_ip', 'cm_ip_port_21', 'cm_ip_port_22', 'cm_ip_port_80',
                                       'cm_ip_tcp_syn', 'cm_ip_tcp_ack', 'cm_ip_tcp_rst', 'cm_ip_icmp', 'bm_ip_src',
@@ -27,8 +30,34 @@ def postprocess():
         config.df_final_combined = config.df_final_combined.join(config.df_kmeans_final['kmeans_cord_x'])
         config.df_final_combined = config.df_final_combined.join(config.df_kmeans_final['kmeans_cord_y'])
 
-    # DBSCAN: add the clusters and respective coordinates to the final dataframe
+        config.df_final_combined = config.df_final_combined.join(df_kmeans_temp['kmeans_isolated'])
+
+        # Clusters with a single IP src address.
+
+        df_kmeans_ip_src = config.df_final_combined[['ip_src', 'kmeans_cluster']]
+
+        grouped = df_kmeans_ip_src.groupby(df_kmeans_ip_src.kmeans_cluster)
+
+        for name, group in grouped:
+            if len(np.unique(group.ip_src)) == 1:
+                config.df_final_combined.loc[config.df_final_combined['kmeans_cluster']
+                                             == group.kmeans_cluster.iloc[0], 'kmeans_isolated'] = True
+
+        # Clusters with a single IP dst address.
+
+        df_kmeans_ip_dst = config.df_final_combined[['ip_dst', 'kmeans_cluster']]
+
+        grouped = df_kmeans_ip_dst.groupby(df_kmeans_ip_dst.kmeans_cluster)
+
+        for name, group in grouped:
+            if len(np.unique(group.ip_dst)) == 1:
+                config.df_final_combined.loc[config.df_final_combined['kmeans_cluster']
+                                             == group.kmeans_cluster.iloc[0], 'kmeans_isolated'] = True
+
+    # DBSCAN: add the clusters and respective coordinates to the final dataframe.
     if config.args.dbscan:
+        # Flows identified as outliers (dbscan_cluster == -1).
+
         df_dbscan_temp = pd.merge(config.df_final_combined, config.df_dbscan_isolated,
                                   on=['ip_src', 'ip_dst', 'cm_ip', 'cm_ip_port_21', 'cm_ip_port_22', 'cm_ip_port_80',
                                       'cm_ip_tcp_syn', 'cm_ip_tcp_ack', 'cm_ip_tcp_rst', 'cm_ip_icmp', 'bm_ip_src',
@@ -43,14 +72,31 @@ def postprocess():
         config.df_final_combined = config.df_final_combined.join(config.df_dbscan_final['dbscan_cord_x'])
         config.df_final_combined = config.df_final_combined.join(config.df_dbscan_final['dbscan_cord_y'])
 
-    # Add the isolated cluster data to the final dataframe
-
-    if config.args.kmeans:
-        config.df_final_combined = config.df_final_combined.join(df_kmeans_temp['kmeans_isolated'])
-    if config.args.dbscan:
         config.df_final_combined = config.df_final_combined.join(df_dbscan_temp['dbscan_isolated'])
 
-    # Output the final dataframe to a csv
+        # Clusters with a single IP src address.
+
+        df_dbscan_ip_src = config.df_final_combined[['ip_src', 'dbscan_cluster']]
+
+        grouped = df_dbscan_ip_src.groupby(df_dbscan_ip_src.dbscan_cluster)
+
+        for name, group in grouped:
+            if len(np.unique(group.ip_src)) == 1:
+                config.df_final_combined.loc[config.df_final_combined['dbscan_cluster']
+                                             == group.dbscan_cluster.iloc[0], 'dbscan_isolated'] = True
+
+        # Clusters with a single IP dst address.
+
+        df_dbscan_ip_dst = config.df_final_combined[['ip_dst', 'dbscan_cluster']]
+
+        grouped = df_dbscan_ip_dst.groupby(df_dbscan_ip_dst.dbscan_cluster)
+
+        for name, group in grouped:
+            if len(np.unique(group.ip_dst)) == 1:
+                config.df_final_combined.loc[config.df_final_combined['dbscan_cluster']
+                                             == group.dbscan_cluster.iloc[0], 'dbscan_isolated'] = True
+
+    # Output the final dataframe to a csv.
 
     config.now = datetime.now()
 

@@ -63,4 +63,5 @@ def dbscan():
                                                           'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'dbscan_cluster',
                                                           'dbscan_cord_x', 'dbscan_cord_y'])
 
-    config.df_dbscan_isolated = config.df_dbscan_final.drop_duplicates(subset=['dbscan_cluster'], keep=False)
+    # Add all the obtained outliers (identified by DBSCAN as cluster == -1) to a specific df.
+    config.df_dbscan_isolated = config.df_dbscan_final[config.df_dbscan_final.dbscan_cluster == -1]
