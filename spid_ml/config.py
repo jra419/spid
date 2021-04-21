@@ -31,19 +31,47 @@ df_dbscan_final = pd.DataFrame()
 df_kmeans_isolated = pd.DataFrame()
 df_dbscan_isolated = pd.DataFrame()
 
+# Evaluation metrics: global counters for the alert flows.
+kmeans_tp_alert = 0
+kmeans_fp_alert = 0
+kmeans_tn_alert = 0
+kmeans_fn_alert = 0
+dbscan_tp_alert = 0
+dbscan_fp_alert = 0
+dbscan_tn_alert = 0
+dbscan_fn_alert = 0
+all_tp_alert = 0
+all_fp_alert = 0
+all_tn_alert = 0
+all_fn_alert = 0
+
+# Evaluation metrics: global counters per flow.
+kmeans_tp_flow_global = dict()
+kmeans_fp_flow_global = dict()
+kmeans_tn_flow_global = dict()
+kmeans_fn_flow_global = dict()
+dbscan_tp_flow_global = dict()
+dbscan_fp_flow_global = dict()
+dbscan_tn_flow_global = dict()
+dbscan_fn_flow_global = dict()
+all_tp_flow_global = dict()
+all_fp_flow_global = dict()
+all_tn_flow_global = dict()
+all_fn_flow_global = dict()
+
 # Evaluation metrics: global counters.
-kmeans_tp = 0
-kmeans_fp = 0
-kmeans_tn = 0
-kmeans_fn = 0
-dbscan_tp = 0
-dbscan_fp = 0
-dbscan_tn = 0
-dbscan_fn = 0
-all_tp = 0
-all_fp = 0
-all_tn = 0
-all_fn = 0
+kmeans_tp_global = 0
+kmeans_fp_global = 0
+kmeans_tn_global = 0
+kmeans_fn_global = 0
+dbscan_tp_global = 0
+dbscan_fp_global = 0
+dbscan_tn_global = 0
+dbscan_fn_global = 0
+all_tp_global = 0
+all_fp_global = 0
+all_tn_global = 0
+all_fn_global = 0
 
 # Datetime variable, used to output files with the same date and time.
 now = datetime.now()

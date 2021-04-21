@@ -12,7 +12,6 @@ def postprocess():
     df_dbscan_temp = pd.DataFrame()
 
     # K-means: add the clusters and respective coordinates to the final dataframe.
-
     if config.args.kmeans:
         # Clusters composed of a single flow.
 
@@ -36,8 +35,10 @@ def postprocess():
 
         df_kmeans_ip_src = config.df_final_combined[['ip_src', 'kmeans_cluster']]
 
+        # Group by ip src.
         grouped = df_kmeans_ip_src.groupby(df_kmeans_ip_src.kmeans_cluster)
 
+        # Clusters where all the flows have the same ip src are considered isolated.
         for name, group in grouped:
             if len(np.unique(group.ip_src)) == 1:
                 config.df_final_combined.loc[config.df_final_combined['kmeans_cluster']
@@ -47,8 +48,10 @@ def postprocess():
 
         df_kmeans_ip_dst = config.df_final_combined[['ip_dst', 'kmeans_cluster']]
 
+        # Group by ip dst.
         grouped = df_kmeans_ip_dst.groupby(df_kmeans_ip_dst.kmeans_cluster)
 
+        # Clusters where all the flows have the same ip dst are considered isolated.
         for name, group in grouped:
             if len(np.unique(group.ip_dst)) == 1:
                 config.df_final_combined.loc[config.df_final_combined['kmeans_cluster']
