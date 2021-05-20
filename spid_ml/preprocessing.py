@@ -18,7 +18,9 @@ def preprocess():
 
     norm_ip = np.array(norm1)
 
-    norm_ip = np.delete(norm_ip, [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], axis=1)
+    norm_ip = np.delete(norm_ip,
+                        [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+                        axis=1)
 
     # Obtain from ONOS the number of packets/bytes corresponding to the current flow.
     # list_pb = request_pb(str(norm_src_ip[0, 0]), str(norm_dst_ip[0, 1]))
@@ -44,7 +46,8 @@ def preprocess():
         m = (config.df['ip_src'].values == config.norm['ip_src'].values) \
             & (config.df['ip_dst'].values == config.norm['ip_dst'].values)
 
-        config.df.loc[m, ['cm_ip']] = config.norm['cm_ip'].values[0]
+        config.df.loc[m, ['cm_ip_cnt']] = config.norm['cm_ip_cnt'].values[0]
+        config.df.loc[m, ['cm_ip_len']] = config.norm['cm_ip_len'].values[0]
         config.df.loc[m, ['bm_ip_src']] = config.norm['bm_ip_src'].values[0]
         config.df.loc[m, ['bm_ip_dst']] = config.norm['bm_ip_dst'].values[0]
         config.df.loc[m, ['bm_ip_src_port_src']] = config.norm['bm_ip_src_port_src'].values[0]
@@ -55,25 +58,32 @@ def preprocess():
         # We only update the following values if they are != 0.
         # The values will only be != 0 if the tcp flags are syn/ack/rst or the protocol is icmp, respectively.
 
-        if config.norm['cm_ip_icmp'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_icmp']] = config.norm['cm_ip_icmp'].values[0]
+        if config.norm['cm_ip_icmp_cnt'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_icmp_cnt']] = config.norm['cm_ip_icmp_cnt'].values[0]
+            config.df.loc[m, ['cm_ip_icmp_len']] = config.norm['cm_ip_icmp_len'].values[0]
 
         # Due to way the following stats are sent from the data plane, only one of each group, if any, can be != 0.
         # If a value != 0, we update it in the dataframe.
 
-        if config.norm['cm_ip_port_21'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_port_21']] = config.norm['cm_ip_port_21'].values[0]
-        if config.norm['cm_ip_port_22'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_port_22']] = config.norm['cm_ip_port_22'].values[0]
-        if config.norm['cm_ip_port_80'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_port_80']] = config.norm['cm_ip_port_80'].values[0]
+        if config.norm['cm_ip_port_21_cnt'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_port_21_cnt']] = config.norm['cm_ip_port_21_cnt'].values[0]
+            config.df.loc[m, ['cm_ip_port_21_len']] = config.norm['cm_ip_port_21_len'].values[0]
+        if config.norm['cm_ip_port_22_cnt'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_port_22_cnt']] = config.norm['cm_ip_port_22_cnt'].values[0]
+            config.df.loc[m, ['cm_ip_port_22_len']] = config.norm['cm_ip_port_22_len'].values[0]
+        if config.norm['cm_ip_port_80_cnt'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_port_80_cnt']] = config.norm['cm_ip_port_80_cnt'].values[0]
+            config.df.loc[m, ['cm_ip_port_80_len']] = config.norm['cm_ip_port_80_len'].values[0]
 
-        if config.norm['cm_ip_tcp_syn'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_tcp_syn']] = config.norm['cm_ip_tcp_syn'].values[0]
-        if config.norm['cm_ip_tcp_ack'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_tcp_ack']] = config.norm['cm_ip_tcp_ack'].values[0]
-        if config.norm['cm_ip_tcp_rst'].values[0] != 0:
-            config.df.loc[m, ['cm_ip_tcp_rst']] = config.norm['cm_ip_tcp_rst'].values[0]
+        if config.norm['cm_ip_tcp_syn_cnt'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_tcp_syn_cnt']] = config.norm['cm_ip_tcp_syn_cnt'].values[0]
+            config.df.loc[m, ['cm_ip_tcp_syn_len']] = config.norm['cm_ip_tcp_syn_len'].values[0]
+        if config.norm['cm_ip_tcp_ack_cnt'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_tcp_ack_cnt']] = config.norm['cm_ip_tcp_ack_cnt'].values[0]
+            config.df.loc[m, ['cm_ip_tcp_ack_len']] = config.norm['cm_ip_tcp_ack_len'].values[0]
+        if config.norm['cm_ip_tcp_rst_cnt'].values[0] != 0:
+            config.df.loc[m, ['cm_ip_tcp_rst_cnt']] = config.norm['cm_ip_tcp_rst_len'].values[0]
+            config.df.loc[m, ['cm_ip_tcp_rst_cnt']] = config.norm['cm_ip_tcp_rst_len'].values[0]
 
     else:
         config.df = config.df.append(config.norm, ignore_index=True)
@@ -140,21 +150,34 @@ def normalization():
 
     scaled_src_ip = MinMaxScaler().fit_transform(config.spid_stats_norm['ip_src'].values.reshape(-1, 1))
     scaled_dst_ip = MinMaxScaler().fit_transform(config.spid_stats_norm['ip_dst'].values.reshape(-1, 1))
-    scaled_cm_ip = MinMaxScaler().fit_transform(
-        config.spid_stats_norm['cm_ip'].values.reshape(-1, 1))
-    scaled_cm_ip_port_21 = MinMaxScaler().fit_transform(
-        config.spid_stats_norm['cm_ip_port_21'].values.reshape(-1, 1))
-    scaled_cm_ip_port_22 = MinMaxScaler().fit_transform(
-        config.spid_stats_norm['cm_ip_port_22'].values.reshape(-1, 1))
-    scaled_cm_ip_port_80 = MinMaxScaler().fit_transform(
-        config.spid_stats_norm['cm_ip_port_80'].values.reshape(-1, 1))
-    scaled_cm_ip_tcp_syn = MinMaxScaler().fit_transform(
-        config.spid_stats_norm['cm_ip_tcp_syn'].values.reshape(-1, 1))
-    scaled_cm_ip_tcp_ack = MinMaxScaler().fit_transform(
-        config.spid_stats_norm['cm_ip_tcp_ack'].values.reshape(-1, 1))
-    scaled_cm_ip_tcp_rst = MinMaxScaler().fit_transform(
-        config.spid_stats_norm['cm_ip_tcp_rst'].values.reshape(-1, 1))
-    scaled_cm_ip_icmp = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_icmp'].values.reshape(-1, 1))
+    scaled_cm_ip_cnt = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_cnt'].values.reshape(-1, 1))
+    scaled_cm_ip_len = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_len'].values.reshape(-1, 1))
+    scaled_cm_ip_port_21_cnt = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_port_21_cnt'].values.reshape(-1, 1))
+    scaled_cm_ip_port_21_len = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_port_21_len'].values.reshape(-1, 1))
+    scaled_cm_ip_port_22_cnt = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_port_22_cnt'].values.reshape(-1, 1))
+    scaled_cm_ip_port_22_len = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_port_22_len'].values.reshape(-1, 1))
+    scaled_cm_ip_port_80_cnt = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_port_80_cnt'].values.reshape(-1, 1))
+    scaled_cm_ip_port_80_len = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_port_80_len'].values.reshape(-1, 1))
+    scaled_cm_ip_tcp_syn_cnt = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_tcp_syn_cnt'].values.reshape(-1, 1))
+    scaled_cm_ip_tcp_syn_len = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_tcp_syn_len'].values.reshape(-1, 1))
+    scaled_cm_ip_tcp_ack_cnt = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_tcp_ack_cnt'].values.reshape(-1, 1))
+    scaled_cm_ip_tcp_ack_len = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_tcp_ack_len'].values.reshape(-1, 1))
+    scaled_cm_ip_tcp_rst_cnt = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_tcp_rst_cnt'].values.reshape(-1, 1))
+    scaled_cm_ip_tcp_rst_len = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_tcp_rst_len'].values.reshape(-1, 1))
+    scaled_cm_ip_icmp_cnt = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_icmp_cnt'].values.reshape(-1, 1))
+    scaled_cm_ip_icmp_len = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_icmp_len'].values.reshape(-1, 1))
     scaled_bm_ip_src = MinMaxScaler().fit_transform(config.spid_stats_norm['bm_ip_src'].values.reshape(-1, 1))
     scaled_bm_ip_dst = MinMaxScaler().fit_transform(config.spid_stats_norm['bm_ip_dst'].values.reshape(-1, 1))
     scaled_bm_ip_src_port_src = MinMaxScaler().fit_transform(
@@ -168,14 +191,22 @@ def normalization():
 
     config.spid_stats_norm['ip_src'] = scaled_src_ip
     config.spid_stats_norm['ip_dst'] = scaled_dst_ip
-    config.spid_stats_norm['cm_ip'] = scaled_cm_ip
-    config.spid_stats_norm['cm_ip_port_21'] = scaled_cm_ip_port_21
-    config.spid_stats_norm['cm_ip_port_22'] = scaled_cm_ip_port_22
-    config.spid_stats_norm['cm_ip_port_80'] = scaled_cm_ip_port_80
-    config.spid_stats_norm['cm_ip_tcp_syn'] = scaled_cm_ip_tcp_syn
-    config.spid_stats_norm['cm_ip_tcp_ack'] = scaled_cm_ip_tcp_ack
-    config.spid_stats_norm['cm_ip_tcp_rst'] = scaled_cm_ip_tcp_rst
-    config.spid_stats_norm['cm_ip_icmp'] = scaled_cm_ip_icmp
+    config.spid_stats_norm['cm_ip_cnt'] = scaled_cm_ip_cnt
+    config.spid_stats_norm['cm_ip_len'] = scaled_cm_ip_len
+    config.spid_stats_norm['cm_ip_port_21_cnt'] = scaled_cm_ip_port_21_cnt
+    config.spid_stats_norm['cm_ip_port_21_len'] = scaled_cm_ip_port_21_len
+    config.spid_stats_norm['cm_ip_port_22_cnt'] = scaled_cm_ip_port_22_cnt
+    config.spid_stats_norm['cm_ip_port_22_len'] = scaled_cm_ip_port_22_len
+    config.spid_stats_norm['cm_ip_port_80_cnt'] = scaled_cm_ip_port_80_cnt
+    config.spid_stats_norm['cm_ip_port_80_len'] = scaled_cm_ip_port_80_len
+    config.spid_stats_norm['cm_ip_tcp_syn_cnt'] = scaled_cm_ip_tcp_syn_cnt
+    config.spid_stats_norm['cm_ip_tcp_syn_len'] = scaled_cm_ip_tcp_syn_len
+    config.spid_stats_norm['cm_ip_tcp_ack_cnt'] = scaled_cm_ip_tcp_ack_cnt
+    config.spid_stats_norm['cm_ip_tcp_ack_len'] = scaled_cm_ip_tcp_ack_len
+    config.spid_stats_norm['cm_ip_tcp_rst_cnt'] = scaled_cm_ip_tcp_rst_cnt
+    config.spid_stats_norm['cm_ip_tcp_rst_len'] = scaled_cm_ip_tcp_rst_len
+    config.spid_stats_norm['cm_ip_icmp_cnt'] = scaled_cm_ip_icmp_cnt
+    config.spid_stats_norm['cm_ip_icmp_len'] = scaled_cm_ip_icmp_len
     config.spid_stats_norm['bm_ip_src'] = scaled_bm_ip_src
     config.spid_stats_norm['bm_ip_dst'] = scaled_bm_ip_dst
     config.spid_stats_norm['bm_ip_src_port_src'] = scaled_bm_ip_src_port_src

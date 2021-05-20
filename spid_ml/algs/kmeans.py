@@ -89,9 +89,12 @@ def kmeans():
     # Final Cluster Dataframes
 
     config.df_kmeans_final = config.pd.DataFrame(kmeans_final,
-                                                 columns=['ip_src', 'ip_dst', 'cm_ip', 'cm_ip_port_21', 'cm_ip_port_22',
-                                                          'cm_ip_port_80', 'cm_ip_tcp_syn', 'cm_ip_tcp_ack',
-                                                          'cm_ip_tcp_rst', 'cm_ip_icmp', 'bm_ip_src', 'bm_ip_dst',
+                                                 columns=['ip_src', 'ip_dst', 'cm_ip_cnt', 'cm_ip_len',
+                                                          'cm_ip_port_21_cnt', 'cm_ip_port_21_len', 'cm_ip_port_22_cnt',
+                                                          'cm_ip_port_22_len', 'cm_ip_port_80_cnt', 'cm_ip_port_80_len',
+                                                          'cm_ip_tcp_syn_cnt', 'cm_ip_tcp_syn_len', 'cm_ip_tcp_ack_cnt',
+                                                          'cm_ip_tcp_ack_len', 'cm_ip_tcp_rst_cnt', 'cm_ip_tcp_rst_len',
+                                                          'cm_ip_icmp_cnt', 'cm_ip_icmp_len', 'bm_ip_src', 'bm_ip_dst',
                                                           'bm_ip_src_port_src', 'bm_ip_src_port_dst',
                                                           'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'kmeans_cluster',
                                                           'kmeans_cord_x', 'kmeans_cord_y'])
