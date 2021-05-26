@@ -63,7 +63,8 @@ def dbscan():
                                                           'cm_ip_tcp_ack_len', 'cm_ip_tcp_rst_cnt', 'cm_ip_tcp_rst_len',
                                                           'cm_ip_icmp_cnt', 'cm_ip_icmp_len', 'bm_ip_src', 'bm_ip_dst',
                                                           'bm_ip_src_port_src', 'bm_ip_src_port_dst',
-                                                          'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'dbscan_cluster',
+                                                          'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'is_tuple_n',
+                                                          'is_tuple_ls', 'is_tuple_ss', 'dbscan_cluster',
                                                           'dbscan_cord_x', 'dbscan_cord_y'])
 
     # Add all the obtained outliers (identified by DBSCAN as cluster == -1) to a specific df.
