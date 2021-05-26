@@ -19,7 +19,7 @@ def preprocess():
     norm_ip = np.array(norm1)
 
     norm_ip = np.delete(norm_ip,
-                        [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+                        [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
                         axis=1)
 
     # Obtain from ONOS the number of packets/bytes corresponding to the current flow.
@@ -54,6 +54,9 @@ def preprocess():
         config.df.loc[m, ['bm_ip_src_port_dst']] = config.norm['bm_ip_src_port_dst'].values[0]
         config.df.loc[m, ['bm_ip_dst_port_src']] = config.norm['bm_ip_dst_port_src'].values[0]
         config.df.loc[m, ['bm_ip_dst_port_dst']] = config.norm['bm_ip_dst_port_dst'].values[0]
+        config.df.loc[m, ['is_tuple_n']] = config.norm['is_tuple_n'].values[0]
+        config.df.loc[m, ['is_tuple_ls']] = config.norm['is_tuple_ls'].values[0]
+        config.df.loc[m, ['is_tuple_ss']] = config.norm['is_tuple_ss'].values[0]
 
         # We only update the following values if they are != 0.
         # The values will only be != 0 if the tcp flags are syn/ack/rst or the protocol is icmp, respectively.
@@ -188,6 +191,9 @@ def normalization():
         config.spid_stats_norm['bm_ip_dst_port_src'].values.reshape(-1, 1))
     scaled_bm_ip_dst_port_dst = MinMaxScaler().fit_transform(
         config.spid_stats_norm['bm_ip_dst_port_dst'].values.reshape(-1, 1))
+    scaled_is_tuple_n = MinMaxScaler().fit_transform(config.spid_stats_norm['is_tuple_n'].values.reshape(-1, 1))
+    scaled_is_tuple_ls = MinMaxScaler().fit_transform(config.spid_stats_norm['is_tuple_ls'].values.reshape(-1, 1))
+    scaled_is_tuple_ss = MinMaxScaler().fit_transform(config.spid_stats_norm['is_tuple_ss'].values.reshape(-1, 1))
 
     config.spid_stats_norm['ip_src'] = scaled_src_ip
     config.spid_stats_norm['ip_dst'] = scaled_dst_ip
@@ -213,6 +219,9 @@ def normalization():
     config.spid_stats_norm['bm_ip_src_port_dst'] = scaled_bm_ip_src_port_dst
     config.spid_stats_norm['bm_ip_dst_port_src'] = scaled_bm_ip_dst_port_src
     config.spid_stats_norm['bm_ip_dst_port_dst'] = scaled_bm_ip_dst_port_dst
+    config.spid_stats_norm['is_tuple_n'] = scaled_is_tuple_n
+    config.spid_stats_norm['is_tuple_ls'] = scaled_is_tuple_ls
+    config.spid_stats_norm['is_tuple_ss'] = scaled_is_tuple_ss
 
 
 def update_related():
