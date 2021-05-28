@@ -56,15 +56,14 @@ def dbscan():
     # Final Cluster Dataframes
 
     config.df_dbscan_final = config.pd.DataFrame(dbscan_final,
-                                                 columns=['ip_src', 'ip_dst', 'cm_ip_cnt', 'cm_ip_len',
+                                                 columns=['ip_src', 'ip_dst', 'cm_ip_cnt', 'cm_ip_len', 'cm_ip_len_ss',
                                                           'cm_ip_port_21_cnt', 'cm_ip_port_21_len', 'cm_ip_port_22_cnt',
                                                           'cm_ip_port_22_len', 'cm_ip_port_80_cnt', 'cm_ip_port_80_len',
                                                           'cm_ip_tcp_syn_cnt', 'cm_ip_tcp_syn_len', 'cm_ip_tcp_ack_cnt',
                                                           'cm_ip_tcp_ack_len', 'cm_ip_tcp_rst_cnt', 'cm_ip_tcp_rst_len',
                                                           'cm_ip_icmp_cnt', 'cm_ip_icmp_len', 'bm_ip_src', 'bm_ip_dst',
                                                           'bm_ip_src_port_src', 'bm_ip_src_port_dst',
-                                                          'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'is_tuple_n',
-                                                          'is_tuple_ls', 'is_tuple_ss', 'dbscan_cluster',
+                                                          'bm_ip_dst_port_src', 'bm_ip_dst_port_dst', 'dbscan_cluster',
                                                           'dbscan_cord_x', 'dbscan_cord_y'])
 
     # Add all the obtained outliers (identified by DBSCAN as cluster == -1) to a specific df.
