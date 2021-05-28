@@ -19,7 +19,8 @@ def preprocess():
     norm_ip = np.array(norm1)
 
     norm_ip = np.delete(norm_ip,
-                        [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], axis=1)
+                        [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
+                        axis=1)
 
     # Obtain from ONOS the number of packets/bytes corresponding to the current flow.
     # list_pb = request_pb(str(norm_src_ip[0, 0]), str(norm_dst_ip[0, 1]))
@@ -48,6 +49,8 @@ def preprocess():
         config.df.loc[m, ['cm_ip_cnt']] = config.norm['cm_ip_cnt'].values[0]
         config.df.loc[m, ['cm_ip_len']] = config.norm['cm_ip_len'].values[0]
         config.df.loc[m, ['cm_ip_len_ss']] = config.norm['cm_ip_len_ss'].values[0]
+        config.df.loc[m, ['cm_ip_len_mean']] = config.norm['cm_ip_len_mean'].values[0]
+        config.df.loc[m, ['cm_ip_len_std_dev']] = config.norm['cm_ip_len_std_dev'].values[0]
         config.df.loc[m, ['bm_ip_src']] = config.norm['bm_ip_src'].values[0]
         config.df.loc[m, ['bm_ip_dst']] = config.norm['bm_ip_dst'].values[0]
         config.df.loc[m, ['bm_ip_src_port_src']] = config.norm['bm_ip_src_port_src'].values[0]
@@ -153,6 +156,9 @@ def normalization():
     scaled_cm_ip_cnt = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_cnt'].values.reshape(-1, 1))
     scaled_cm_ip_len = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_len'].values.reshape(-1, 1))
     scaled_cm_ip_len_ss = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_len_ss'].values.reshape(-1, 1))
+    scaled_cm_ip_len_mean = MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_len_mean'].values.reshape(-1, 1))
+    scaled_cm_ip_len_std_dev = \
+        MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_len_std_dev'].values.reshape(-1, 1))
     scaled_cm_ip_port_21_cnt = \
         MinMaxScaler().fit_transform(config.spid_stats_norm['cm_ip_port_21_cnt'].values.reshape(-1, 1))
     scaled_cm_ip_port_21_len = \
@@ -195,6 +201,8 @@ def normalization():
     config.spid_stats_norm['cm_ip_cnt'] = scaled_cm_ip_cnt
     config.spid_stats_norm['cm_ip_len'] = scaled_cm_ip_len
     config.spid_stats_norm['cm_ip_len_ss'] = scaled_cm_ip_len_ss
+    config.spid_stats_norm['cm_ip_len_mean'] = scaled_cm_ip_len_mean
+    config.spid_stats_norm['cm_ip_len_std_dev'] = scaled_cm_ip_len_std_dev
     config.spid_stats_norm['cm_ip_port_21_cnt'] = scaled_cm_ip_port_21_cnt
     config.spid_stats_norm['cm_ip_port_21_len'] = scaled_cm_ip_port_21_len
     config.spid_stats_norm['cm_ip_port_22_cnt'] = scaled_cm_ip_port_22_cnt

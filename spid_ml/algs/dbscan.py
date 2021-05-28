@@ -57,7 +57,8 @@ def dbscan():
 
     config.df_dbscan_final = config.pd.DataFrame(dbscan_final,
                                                  columns=['ip_src', 'ip_dst', 'cm_ip_cnt', 'cm_ip_len', 'cm_ip_len_ss',
-                                                          'cm_ip_port_21_cnt', 'cm_ip_port_21_len', 'cm_ip_port_22_cnt',
+                                                          'cm_ip_len_mean', 'cm_ip_len_std_dev', 'cm_ip_port_21_cnt',
+                                                          'cm_ip_port_21_len', 'cm_ip_port_22_cnt',
                                                           'cm_ip_port_22_len', 'cm_ip_port_80_cnt', 'cm_ip_port_80_len',
                                                           'cm_ip_tcp_syn_cnt', 'cm_ip_tcp_syn_len', 'cm_ip_tcp_ack_cnt',
                                                           'cm_ip_tcp_ack_len', 'cm_ip_tcp_rst_cnt', 'cm_ip_tcp_rst_len',
