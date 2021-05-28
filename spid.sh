@@ -88,7 +88,7 @@ echo "--------------------"
 
 cd ~/spid/ || exit
 
-./runtime_cli_config.sh
+./hash_config.sh
 
 sleep 5
 
