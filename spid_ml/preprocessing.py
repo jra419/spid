@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import os
 import config
 import re
 import sys
@@ -6,6 +7,7 @@ import requests
 from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
+from datetime import datetime
 
 
 def preprocess():
@@ -17,6 +19,18 @@ def preprocess():
     # Used to check if the respective src/dst ip addresses already exist.
 
     norm_ip = np.array(norm1)
+
+    if config.args.p4stats:
+
+        config.now = datetime.now()
+        ts_date = config.now.strftime('%Y-%m-%d')
+
+        outdir = './output/' + ts_date
+        if not os.path.exists('./output/' + ts_date):
+            os.mkdir(outdir)
+
+        outpath = os.path.join(outdir, 'p4-stats.csv')
+        norm1.to_csv(outpath, mode='a', index=False, header=False)
 
     norm_ip = np.delete(norm_ip,
                         [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],

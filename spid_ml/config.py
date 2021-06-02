@@ -86,16 +86,9 @@ now = datetime.now()
 
 parser = argparse.ArgumentParser(description='SPID ML pipeline script args.')
 
-parser.add_argument(
-    '--plot',
-    action='store_true')
-
-parser.add_argument(
-    '--kmeans',
-    action='store_true')
-
-parser.add_argument(
-    '--dbscan',
-    action='store_true')
+parser.add_argument('--plot', action='store_true')
+parser.add_argument('--kmeans', action='store_true')
+parser.add_argument('--dbscan', action='store_true')
+parser.add_argument('--p4stats', action='store_true')
 
 args = parser.parse_args()
