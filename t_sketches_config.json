@@ -30,7 +30,9 @@
 					"bm_ip_dst_port_dst_flag": "0",
 					"ams_flag": "0",
 					"mv_flag": "0",
-					"hash_size": "8000"
+					"hash_size": "8000",
+					"thres_alert": "14",
+					"thres_interval": "1388"
 				}
 			}
 			]
